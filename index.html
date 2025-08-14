@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LAATS - Safety and Quality Services</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #1a1a1a;
+      --accent: #b2975b;
+      --link-bg: #ffffff;
+      --link-border: #dcdcdc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo {
+      width: 200px;
+      margin-bottom: 40px;
+    }
+    .links {
+      display: grid;
+      gap: 16px;
+    }
+    .link {
+      display: block;
+      padding: 14px 20px;
+      background: var(--link-bg);
+      border: 1px solid var(--link-border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: bold;
+      transition: all 0.2s ease-in-out;
+    }
+    .link:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="LOGO-LAATS.png" alt="LAATS Logo" />
+    <div class="links">
+      <a class="link" href="https://forms.gle/cucQrsgYS76fKNcQ9" target="_blank">Nuevo ingreso</a>
+      <a class="link" href="https://forms.gle/dJQk4zjsDAMfENWm8" target="_blank">Sobretiempos</a>
+      <a class="link" href="https://forms.gle/QdrJRPtvZiD8UA7Z9" target="_blank">Justificaciones</a>
+    </div>
+  </div>
+</body>
+</html>
