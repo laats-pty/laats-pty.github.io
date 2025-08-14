@@ -1,3 +1,33 @@
+<!--
+========================================================
+INSTRUCCIONES RÁPIDAS PARA EDITAR ESTA PÁGINA (LAATS)
+========================================================
+
+📌 Cómo cambiar el logo:
+1. Sube tu nueva imagen al repositorio con el mismo nombre: LOGO-LAATS.png
+2. Si cambias el nombre del archivo, actualiza también la línea <img src="LOGO-LAATS.png">
+
+📌 Cómo cambiar enlaces:
+1. Busca la sección <div class="links"> ... </div>.
+2. Copia y pega una línea <a class="link" ...> para añadir más.
+3. Cambia el texto visible y el enlace href="...".
+
+📌 Cómo cambiar colores:
+1. Arriba, en :root, cambia los valores:
+   --bg: color de fondo.
+   --text: color del texto.
+   --accent: color de acento y footer.
+
+📌 Cómo cambiar el correo del footer:
+1. Busca el <footer> y cambia "info@laats.com" por el tuyo.
+
+📌 Cómo publicar cambios:
+1. Sube el archivo modificado a GitHub (Add file → Upload files).
+2. Espera 1–2 minutos y revisa https://laats-pty.github.io
+
+========================================================
+-->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,13 +36,13 @@
   <title>LAATS - Safety and Quality Services</title>
 
   <style>
-    /* 🎨 Colores principales (puedes cambiar) */
+    /* 🎨 COLORES PRINCIPALES — Puedes cambiar estos valores */
     :root {
-      --bg: #f8f9fa;         /* Color de fondo */
-      --text: #1a1a1a;       /* Color de texto */
-      --accent: #b2975b;     /* Color de acento (hover) */
-      --link-bg: #ffffff;    /* Fondo de botones */
-      --link-border: #dcdcdc;/* Borde de botones */
+      --bg: #f8f9fa;         /* Color de fondo general */
+      --text: #1a1a1a;       /* Color principal del texto */
+      --accent: #b2975b;     /* Color dorado corporativo */
+      --link-bg: #ffffff;    /* Fondo de los botones/enlaces */
+      --link-border: #dcdcdc;/* Borde de los botones/enlaces */
     }
 
     * { box-sizing: border-box; }
@@ -23,7 +53,7 @@
       color: var(--text);
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      min-height: 100vh; /* Mantiene el footer abajo */
     }
 
     .container {
@@ -47,7 +77,7 @@
 
     .links {
       display: grid;
-      gap: 16px;
+      gap: 16px; /* Espacio entre botones */
     }
 
     .link {
@@ -68,7 +98,6 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
     }
 
-    /* 📌 Pie de página */
     footer {
       background: var(--accent);
       color: white;
@@ -86,10 +115,11 @@
 <body>
   <div class="container">
     <div class="content">
-      <!-- 📷 Logo -->
+
+      <!-- 📷 LOGO -->
       <img class="logo" src="LOGO-LAATS.png" alt="LAATS Logo" />
 
-      <!-- 📌 Enlaces -->
+      <!-- 📌 LISTA DE ENLACES -->
       <div class="links">
         <a class="link" href="https://forms.gle/cucQrsgYS76fKNcQ9" target="_blank">Nuevo ingreso</a>
         <a class="link" href="https://forms.gle/dJQk4zjsDAMfENWm8" target="_blank">Sobretiempos</a>
@@ -98,14 +128,13 @@
     </div>
   </div>
 
-  <!-- 📌 Footer -->
+  <!-- 📌 PIE DE PÁGINA -->
   <footer>
     © <span id="year"></span> LAATS - Safety and Quality Services | 
     <a href="mailto:info@laats.com">info@laats.com</a>
   </footer>
 
   <script>
-    // 📅 Año automático
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
