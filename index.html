@@ -4,14 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LAATS - Safety and Quality Services</title>
+
   <style>
+    /* 🎨 Colores principales (puedes cambiar) */
     :root {
-      --bg: #f8f9fa;
-      --text: #1a1a1a;
-      --accent: #b2975b;
-      --link-bg: #ffffff;
-      --link-border: #dcdcdc;
+      --bg: #f8f9fa;         /* Color de fondo */
+      --text: #1a1a1a;       /* Color de texto */
+      --accent: #b2975b;     /* Color de acento (hover) */
+      --link-bg: #ffffff;    /* Fondo de botones */
+      --link-border: #dcdcdc;/* Borde de botones */
     }
+
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -19,22 +22,34 @@
       background: var(--bg);
       color: var(--text);
       display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
       justify-content: center;
+      align-items: flex-start;
       padding: 40px 20px;
     }
-    .container {
+
+    .content {
       max-width: 500px;
       width: 100%;
       text-align: center;
     }
+
     .logo {
       width: 200px;
       margin-bottom: 40px;
     }
+
     .links {
       display: grid;
       gap: 16px;
     }
+
     .link {
       display: block;
       padding: 14px 20px;
@@ -46,21 +61,52 @@
       font-weight: bold;
       transition: all 0.2s ease-in-out;
     }
+
     .link:hover {
       border-color: var(--accent);
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.08);
     }
+
+    /* 📌 Pie de página */
+    footer {
+      background: var(--accent);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <img class="logo" src="LOGO-LAATS.png" alt="LAATS Logo" />
-    <div class="links">
-      <a class="link" href="https://forms.gle/cucQrsgYS76fKNcQ9" target="_blank">Nuevo ingreso</a>
-      <a class="link" href="https://forms.gle/dJQk4zjsDAMfENWm8" target="_blank">Sobretiempos</a>
-      <a class="link" href="https://forms.gle/QdrJRPtvZiD8UA7Z9" target="_blank">Justificaciones</a>
+    <div class="content">
+      <!-- 📷 Logo -->
+      <img class="logo" src="LOGO-LAATS.png" alt="LAATS Logo" />
+
+      <!-- 📌 Enlaces -->
+      <div class="links">
+        <a class="link" href="https://forms.gle/cucQrsgYS76fKNcQ9" target="_blank">Nuevo ingreso</a>
+        <a class="link" href="https://forms.gle/dJQk4zjsDAMfENWm8" target="_blank">Sobretiempos</a>
+        <a class="link" href="https://forms.gle/QdrJRPtvZiD8UA7Z9" target="_blank">Justificaciones</a>
+      </div>
     </div>
   </div>
+
+  <!-- 📌 Footer -->
+  <footer>
+    © <span id="year"></span> LAATS - Safety and Quality Services | 
+    <a href="mailto:info@laats.com">info@laats.com</a>
+  </footer>
+
+  <script>
+    // 📅 Año automático
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
