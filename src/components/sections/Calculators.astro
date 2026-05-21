@@ -1,0 +1,46 @@
+---
+import OvertimeCalc from '../calculators/OvertimeCalc.astro';
+import VacationCalc from '../calculators/VacationCalc.astro';
+import ThirteenthCalc from '../calculators/ThirteenthCalc.astro';
+import LiquidationCalc from '../calculators/LiquidationCalc.astro';
+
+const tabs = [
+  { id: 'sobretiempo', label: 'Sobretiempos' },
+  { id: 'vacaciones', label: 'Vacaciones' },
+  { id: 'decimo', label: 'Décimo Tercer Mes' },
+  { id: 'liquidacion', label: 'Liquidación' },
+];
+---
+
+<div class="py-16 px-4 md:px-8 bg-[var(--color-bg)]">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-2 text-center">Calculadoras Laborales</h2>
+    <p class="text-[var(--color-muted)] text-center mb-10">Cálculos basados en la legislación laboral vigente de Panamá</p>
+
+    <div
+      x-data="{ tab: 'sobretiempo' }"
+      class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-sm"
+    >
+      <!-- Tabs -->
+      <div class="flex overflow-x-auto border-b border-[var(--color-border)]">
+        {tabs.map((t) => (
+          <button
+            x-on:click={`tab = '${t.id}'`}
+            x-bind:class={`tab === '${t.id}' ? 'border-b-2 border-[var(--color-primary)] text-[var(--color-primary)] font-semibold' : 'text-[var(--color-muted)] hover:text-[var(--color-text)]'`}
+            class="px-5 py-4 text-sm whitespace-nowrap transition-colors flex-shrink-0"
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <!-- Panels -->
+      <div class="p-6 md:p-8">
+        <div x-show="tab === 'sobretiempo'"><OvertimeCalc /></div>
+        <div x-show="tab === 'vacaciones'" style="display:none;"><VacationCalc /></div>
+        <div x-show="tab === 'decimo'" style="display:none;"><ThirteenthCalc /></div>
+        <div x-show="tab === 'liquidacion'" style="display:none;"><LiquidationCalc /></div>
+      </div>
+    </div>
+  </div>
+</div>

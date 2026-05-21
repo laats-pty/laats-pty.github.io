@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-primary: #1B3A6B;
+  --color-primary-dark: #122750;
+  --color-accent: #F59E0B;
+  --color-bg: #F1F5F9;
+  --color-surface: #FFFFFF;
+  --color-text: #1E293B;
+  --color-muted: #64748B;
+  --color-success: #059669;
+  --color-border: #E2E8F0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}

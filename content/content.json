@@ -1,0 +1,98 @@
+{
+  "site": {
+    "name": "Portal RRHH LAATS Panamá",
+    "tagline": "Tus recursos de Recursos Humanos en un solo lugar",
+    "contactEmail": "asistentepanama@laats.net",
+    "logoUrl": "/logo-laats.svg"
+  },
+  "quickLinks": [
+    {
+      "id": "nuevo-ingreso",
+      "title": "Nuevo Ingreso",
+      "description": "Formulario de incorporación para nuevos empleados",
+      "icon": "user-plus",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Incorporación"
+    },
+    {
+      "id": "sobretiempos",
+      "title": "Solicitud de Sobretiempos",
+      "description": "Envío de horas extras para aprobación",
+      "icon": "clock",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Asistencia"
+    },
+    {
+      "id": "justificaciones",
+      "title": "Justificaciones",
+      "description": "Justificación de ausencias e incapacidades",
+      "icon": "file-text",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Asistencia"
+    },
+    {
+      "id": "planilla",
+      "title": "Consultas de Planilla",
+      "description": "Verificación de salario y descuentos",
+      "icon": "dollar-sign",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Nómina"
+    },
+    {
+      "id": "cartas-trabajo",
+      "title": "Cartas de Trabajo",
+      "description": "Solicitud de constancias laborales",
+      "icon": "briefcase",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Documentos"
+    },
+    {
+      "id": "gastos",
+      "title": "Gastos Reembolsables",
+      "description": "Registro de gastos para reembolso",
+      "icon": "receipt",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Finanzas"
+    },
+    {
+      "id": "vacaciones",
+      "title": "Solicitud de Vacaciones",
+      "description": "Solicitud formal de período vacacional",
+      "icon": "calendar",
+      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "category": "Beneficios"
+    }
+  ],
+  "faq": [
+    {
+      "id": 1,
+      "question": "¿Cuántos días de vacaciones me corresponden por ley?",
+      "answer": "Según el Código de Trabajo de Panamá (Art. 54), tienes derecho a 30 días de vacaciones por cada 11 meses trabajados. Si no has completado el período, se calcula proporcionalmente."
+    },
+    {
+      "id": 2,
+      "question": "¿Cuándo se paga el décimo tercer mes?",
+      "answer": "El décimo tercer mes se paga en tres cuotas: 15 de abril (por enero-marzo), 15 de agosto (por abril-julio) y 15 de diciembre (por agosto-noviembre). Equivale a un mes de salario anual."
+    },
+    {
+      "id": 3,
+      "question": "¿Cuál es el recargo por horas extras en días feriados?",
+      "answer": "Según la Ley 44 de 1995 (Art. 26), las horas extras en días feriados o domingos se pagan al 200% del valor de la hora regular. Las horas extras diurnas se pagan al 125% y las nocturnas al 150%."
+    },
+    {
+      "id": 4,
+      "question": "¿Qué incluye una liquidación por despido sin justa causa?",
+      "answer": "Una liquidación por despido sin justa causa incluye: prima de antigüedad (1 semana de salario por año trabajado), vacaciones proporcionales pendientes, décimo tercer mes proporcional del año en curso, y preaviso según tiempo de servicio."
+    },
+    {
+      "id": 5,
+      "question": "¿Cómo solicito una carta de trabajo?",
+      "answer": "Usa el formulario 'Cartas de Trabajo' en la sección de Accesos Rápidos. Indica el tipo de constancia que necesitas y el tiempo de entrega estimado es de 3 días hábiles."
+    },
+    {
+      "id": 6,
+      "question": "¿A quién contacto para dudas sobre mi planilla?",
+      "answer": "Para consultas sobre tu planilla, usa el formulario 'Consultas de Planilla' en Accesos Rápidos, o escribe directamente a asistentepanama@laats.net."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+---
+interface Props {
+  email: string;
+}
+const { email } = Astro.props;
+---
+
+<footer class="bg-[var(--color-primary-dark)] py-8 mt-16">
+  <div class="max-w-6xl mx-auto px-4 md:px-8 text-center">
+    <p class="text-white/60 text-sm">
+      ¿Preguntas? Escríbenos a{' '}
+      <a href={`mailto:${email}`} class="text-[var(--color-accent)] hover:underline">{email}</a>
+    </p>
+    <p class="text-white/40 text-xs mt-2">
+      © {new Date().getFullYear()} LAATS Panamá. Todos los derechos reservados.
+    </p>
+  </div>
+</footer>

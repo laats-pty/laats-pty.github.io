@@ -1,0 +1,99 @@
+---
+---
+
+<div
+  x-data="{
+    salario: '',
+    anios: 0,
+    mesesAdicionales: 0,
+    diasVacaciones: 0,
+    mesesDecimo: 0,
+    resultado: null,
+    calcular() {
+      const s = parseFloat(this.salario) || 0;
+      if (s <= 0) return;
+      const anios = parseFloat(this.anios) || 0;
+      const mesesAd = parseFloat(this.mesesAdicionales) || 0;
+      const diasVac = parseFloat(this.diasVacaciones) || 0;
+      const mesesDec = parseFloat(this.mesesDecimo) || 0;
+      const salarioSemanal = (s * 12) / 52;
+      const totalAnios = anios + mesesAd / 12;
+      const primaAntiguedad = parseFloat((salarioSemanal * Math.floor(totalAnios)).toFixed(2));
+      const vacacionesProporcionales = parseFloat(((s / 30) * diasVac).toFixed(2));
+      const decimoProporcional = parseFloat(((s * mesesDec) / 12).toFixed(2));
+      let semanasPreaviso = 1;
+      if (totalAnios >= 10) semanasPreaviso = 6;
+      else if (totalAnios >= 5) semanasPreaviso = 4;
+      else if (totalAnios >= 2) semanasPreaviso = 2;
+      const montoPreaviso = parseFloat((salarioSemanal * semanasPreaviso).toFixed(2));
+      const total = parseFloat((primaAntiguedad + vacacionesProporcionales + decimoProporcional + montoPreaviso).toFixed(2));
+      this.resultado = { primaAntiguedad, vacacionesProporcionales, decimoProporcional, montoPreaviso, semanasPreaviso, total };
+    }
+  }"
+  class="space-y-6"
+>
+  <p class="text-xs text-[var(--color-muted)] bg-blue-50 border border-blue-100 rounded-lg px-4 py-2">
+    Ley 44 de 1995 + Código de Trabajo — Prima de antigüedad + Vacaciones + Décimo + Preaviso
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Salario mensual (B/.)</label>
+      <input x-model="salario" type="number" min="0" placeholder="Ej: 800"
+        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Años trabajados</label>
+      <input x-model="anios" type="number" min="0" placeholder="0"
+        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Meses adicionales (sobre años completos)</label>
+      <input x-model="mesesAdicionales" type="number" min="0" max="11" placeholder="0"
+        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Días de vacaciones pendientes</label>
+      <input x-model="diasVacaciones" type="number" min="0" placeholder="0"
+        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+    </div>
+    <div class="sm:col-span-2">
+      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Meses de décimo sin cobrar (año actual)</label>
+      <input x-model="mesesDecimo" type="number" min="0" max="11" placeholder="0"
+        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+    </div>
+  </div>
+
+  <button
+    @click="calcular()"
+    class="bg-[var(--color-primary)] text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+  >
+    Calcular liquidación
+  </button>
+
+  <div x-show="resultado" x-transition class="bg-green-50 border border-green-200 rounded-xl p-5 space-y-3" style="display:none;">
+    <h4 class="font-semibold text-green-800 mb-3">Desglose de liquidación</h4>
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between">
+        <span class="text-[var(--color-muted)]">Prima de antigüedad:</span>
+        <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.primaAntiguedad ?? 0).toFixed(2)"></span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-[var(--color-muted)]">Vacaciones proporcionales:</span>
+        <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.vacacionesProporcionales ?? 0).toFixed(2)"></span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-[var(--color-muted)]">Décimo proporcional:</span>
+        <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.decimoProporcional ?? 0).toFixed(2)"></span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-[var(--color-muted)]">Preaviso (<span x-text="resultado?.semanasPreaviso"></span> sem.):</span>
+        <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoPreaviso ?? 0).toFixed(2)"></span>
+      </div>
+    </div>
+    <div class="border-t border-green-200 pt-4 flex justify-between items-center">
+      <span class="text-lg font-bold text-green-800">Total liquidación:</span>
+      <span class="font-mono text-3xl font-bold text-green-700" x-text="'B/. ' + (resultado?.total ?? 0).toFixed(2)"></span>
+    </div>
+  </div>
+</div>

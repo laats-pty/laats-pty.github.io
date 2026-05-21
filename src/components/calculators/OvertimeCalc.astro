@@ -1,0 +1,99 @@
+---
+---
+
+<div
+  x-data="{
+    salario: '',
+    horasDiurnas: 0,
+    horasNocturnas: 0,
+    horasFeriado: 0,
+    resultado: null,
+    calcular() {
+      const s = parseFloat(this.salario) || 0;
+      const hD = parseFloat(this.horasDiurnas) || 0;
+      const hN = parseFloat(this.horasNocturnas) || 0;
+      const hF = parseFloat(this.horasFeriado) || 0;
+      if (s <= 0) return;
+      const salarioHora = s / 240;
+      const montoDiurno = salarioHora * 1.25 * hD;
+      const montoNocturno = salarioHora * 1.50 * hN;
+      const montoFeriado = salarioHora * 2.00 * hF;
+      const total = montoDiurno + montoNocturno + montoFeriado;
+      this.resultado = { salarioHora, montoDiurno, montoNocturno, montoFeriado, total };
+    }
+  }"
+  class="space-y-6"
+>
+  <div>
+    <p class="text-xs text-[var(--color-muted)] mb-4 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2">
+      Ley 44 de 1995, Art. 26 — Diurno ×1.25 | Nocturno ×1.50 | Feriado/Domingo ×2.00
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Salario mensual (B/.)</label>
+        <input
+          x-model="salario"
+          type="number"
+          min="0"
+          placeholder="Ej: 1000"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Horas diurnas extras</label>
+        <input
+          x-model="horasDiurnas"
+          type="number"
+          min="0"
+          placeholder="0"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Horas nocturnas extras</label>
+        <input
+          x-model="horasNocturnas"
+          type="number"
+          min="0"
+          placeholder="0"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Horas en feriado / domingo</label>
+        <input
+          x-model="horasFeriado"
+          type="number"
+          min="0"
+          placeholder="0"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+        />
+      </div>
+    </div>
+  </div>
+
+  <button
+    @click="calcular()"
+    class="bg-[var(--color-primary)] text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+  >
+    Calcular sobretiempo
+  </button>
+
+  <div x-show="resultado" x-transition class="bg-green-50 border border-green-200 rounded-xl p-5 space-y-3" style="display:none;">
+    <h4 class="font-semibold text-green-800 mb-3">Resultado</h4>
+    <div class="grid grid-cols-2 gap-2 text-sm">
+      <span class="text-[var(--color-muted)]">Salario por hora:</span>
+      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.salarioHora ?? 0).toFixed(2)"></span>
+      <span class="text-[var(--color-muted)]">Horas diurnas (×1.25):</span>
+      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoDiurno ?? 0).toFixed(2)"></span>
+      <span class="text-[var(--color-muted)]">Horas nocturnas (×1.50):</span>
+      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoNocturno ?? 0).toFixed(2)"></span>
+      <span class="text-[var(--color-muted)]">Feriado/domingo (×2.00):</span>
+      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoFeriado ?? 0).toFixed(2)"></span>
+    </div>
+    <div class="border-t border-green-200 pt-3 flex justify-between items-center">
+      <span class="font-semibold text-green-800">Total sobretiempo:</span>
+      <span class="font-mono text-2xl font-bold text-green-700" x-text="'B/. ' + (resultado?.total ?? 0).toFixed(2)"></span>
+    </div>
+  </div>
+</div>

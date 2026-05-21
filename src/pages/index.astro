@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Hero from '../components/sections/Hero.astro';
+import QuickLinks from '../components/sections/QuickLinks.astro';
+import Calculators from '../components/sections/Calculators.astro';
+import FAQ from '../components/sections/FAQ.astro';
+import content from '../../content/content.json';
+---
+
+<BaseLayout title={content.site.name} description={content.site.tagline}>
+  <Header logo={content.site.logoUrl} />
+  <main>
+    <section id="inicio"><Hero site={content.site} /></section>
+    <section id="accesos"><QuickLinks links={content.quickLinks} /></section>
+    <section id="calculadoras"><Calculators /></section>
+    <section id="faq"><FAQ items={content.faq} /></section>
+  </main>
+  <Footer email={content.site.contactEmail} />
+</BaseLayout>

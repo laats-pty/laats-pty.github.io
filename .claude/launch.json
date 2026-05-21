@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "laats-rrhh-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["astro", "dev", "--host"],
+      "port": 4321,
+      "env": {
+        "PATH": "C:\\Program Files\\nodejs;C:\\Windows\\system32;C:\\Windows"
+      }
+    }
+  ]
+}
