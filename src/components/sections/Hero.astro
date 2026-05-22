@@ -7,12 +7,13 @@ const { site } = Astro.props;
 
 <section class="bg-[var(--color-primary)] py-20 px-4 md:px-8 text-center">
   <div class="max-w-3xl mx-auto">
-    <img
-      src={site.logoUrl}
-      alt="LAATS"
-      class="h-24 w-auto mx-auto mb-6"
-      onerror="this.style.display='none'"
-    />
+    <div class="inline-block bg-white rounded-2xl px-8 py-4 mb-8 shadow-lg">
+      <img
+        src={site.logoUrl}
+        alt="LAATS Safety and Quality Services International Panamá"
+        class="h-20 w-auto mx-auto"
+      />
+    </div>
     <h1 class="text-white text-4xl md:text-5xl font-bold mb-4">{site.name}</h1>
     <p class="text-white/70 text-lg md:text-xl mb-10">{site.tagline}</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
