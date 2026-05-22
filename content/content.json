@@ -16,7 +16,7 @@
     },
     {
       "id": "sobretiempos",
-      "title": "Solicitud de Sobretiempos",
+      "title": "Solicitud de Sobretiempos (Temporales)",
       "description": "Solo sobretiempos con aprobación previa. Plazo: 10 días después del cierre de quincena (1-15 y 16-fin de mes). Envíos tardíos se pagan en la quincena siguiente.",
       "icon": "clock",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSf4R8M1110KymvafC5XBo1xVrWwhTahkVIRdZkQ-aRV34_Wow/viewform?usp=header",
@@ -24,7 +24,7 @@
     },
     {
       "id": "justificaciones",
-      "title": "Justificaciones",
+      "title": "Justificaciones (Temporales)",
       "description": "Justificación de ausencias e incapacidades. Enviar a la brevedad posible con los documentos de respaldo correspondientes.",
       "icon": "file-text",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSePC-h9-U1cfxVONfht8DJLaesf5LwHkZVaQs6QW9IuRmP5rA/viewform?usp=header",
@@ -32,9 +32,9 @@
     },
     {
       "id": "planilla",
-      "title": "Consultas de Planilla",
+      "title": "Consultas de Planilla (Temporales)",
       "description": "Consultas respondidas en máximo 2 días hábiles. Incluye tu código de empleado y el período de la consulta.",
-      "icon": "dollar-sign",
+      "icon": "user-question",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSeHxkxUO5fNHtNiBsFDEDpsL1X2CZcopxD4jsz3keDSwHB9OA/viewform?usp=header",
       "category": "Nómina"
     },
@@ -48,9 +48,9 @@
     },
     {
       "id": "gastos",
-      "title": "Gastos Reembolsables",
+      "title": "Gastos Reembolsables (Temporales)",
       "description": "La factura debe incluir nombre y RUC de LAATS (RUC 1075307-1-553162 DV 63). Se reembolsa en la próxima planilla sin deducciones.",
-      "icon": "receipt",
+      "icon": "dollar-sign",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSewyluYWJRVxZ_3CufQSWDEyPVV5eqmc62hqB5Tuvka1QvRbQ/viewform?usp=header",
       "category": "Finanzas"
     },
