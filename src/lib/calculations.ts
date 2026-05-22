@@ -1,6 +1,6 @@
 // ============================================================
 // SOBRETIEMPO — Ley 44 de 1995, Art. 26
-// Diurno ×1.25 | Nocturno ×1.50 | Feriado/Domingo ×2.00
+// Diurno ×1.25 | Nocturno ×1.75 | Feriado/Domingo ×2.00
 // ============================================================
 export function calcOvertime(params: {
   salarioMensual: number;
@@ -10,7 +10,7 @@ export function calcOvertime(params: {
 }): { salarioHora: number; montoDiurno: number; montoNocturno: number; montoFeriado: number; total: number } {
   const salarioHora = params.salarioMensual / 240; // 30 días × 8 horas
   const montoDiurno = salarioHora * 1.25 * params.horasDiurnas;
-  const montoNocturno = salarioHora * 1.50 * params.horasNocturnas;
+  const montoNocturno = salarioHora * 1.75 * params.horasNocturnas;
   const montoFeriado = salarioHora * 2.00 * params.horasFeriado;
   const total = montoDiurno + montoNocturno + montoFeriado;
   return { salarioHora, montoDiurno, montoNocturno, montoFeriado, total };

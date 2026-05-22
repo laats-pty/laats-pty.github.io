@@ -16,7 +16,7 @@
       if (s <= 0) return;
       const salarioHora = s / 240;
       const montoDiurno = salarioHora * 1.25 * hD;
-      const montoNocturno = salarioHora * 1.50 * hN;
+      const montoNocturno = salarioHora * 1.75 * hN;
       const montoFeriado = salarioHora * 2.00 * hF;
       const total = montoDiurno + montoNocturno + montoFeriado;
       this.resultado = { salarioHora, montoDiurno, montoNocturno, montoFeriado, total };
@@ -26,7 +26,7 @@
 >
   <div>
     <p class="text-xs text-[var(--color-muted)] mb-4 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2">
-      Ley 44 de 1995, Art. 26 — Diurno ×1.25 | Nocturno ×1.50 | Feriado/Domingo ×2.00
+      Ley 44 de 1995, Art. 26 — Diurno ×1.25 | Nocturno ×1.75 | Feriado/Domingo ×2.00
     </p>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
@@ -86,7 +86,7 @@
       <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.salarioHora ?? 0).toFixed(2)"></span>
       <span class="text-[var(--color-muted)]">Horas diurnas (×1.25):</span>
       <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoDiurno ?? 0).toFixed(2)"></span>
-      <span class="text-[var(--color-muted)]">Horas nocturnas (×1.50):</span>
+      <span class="text-[var(--color-muted)]">Horas nocturnas (×1.75):</span>
       <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoNocturno ?? 0).toFixed(2)"></span>
       <span class="text-[var(--color-muted)]">Feriado/domingo (×2.00):</span>
       <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.montoFeriado ?? 0).toFixed(2)"></span>

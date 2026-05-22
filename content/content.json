@@ -3,7 +3,7 @@
     "name": "Portal RRHH LAATS Panamá",
     "tagline": "Tus recursos de Recursos Humanos en un solo lugar",
     "contactEmail": "asistentepanama@laats.net",
-    "logoUrl": "/logo-laats.svg"
+    "logoUrl": "/logo-laats.jpg"
   },
   "quickLinks": [
     {
@@ -11,7 +11,7 @@
       "title": "Nuevo Ingreso",
       "description": "Formulario de incorporación para nuevos empleados",
       "icon": "user-plus",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLScwoLaxfGXiEdHGLLftyHxUsERxF1BlHSFbVZj483onX1zMzA/viewform?usp=header",
       "category": "Incorporación"
     },
     {
@@ -19,7 +19,7 @@
       "title": "Solicitud de Sobretiempos",
       "description": "Envío de horas extras para aprobación",
       "icon": "clock",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSf4R8M1110KymvafC5XBo1xVrWwhTahkVIRdZkQ-aRV34_Wow/viewform?usp=header",
       "category": "Asistencia"
     },
     {
@@ -27,7 +27,7 @@
       "title": "Justificaciones",
       "description": "Justificación de ausencias e incapacidades",
       "icon": "file-text",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSePC-h9-U1cfxVONfht8DJLaesf5LwHkZVaQs6QW9IuRmP5rA/viewform?usp=header",
       "category": "Asistencia"
     },
     {
@@ -35,15 +35,15 @@
       "title": "Consultas de Planilla",
       "description": "Verificación de salario y descuentos",
       "icon": "dollar-sign",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSeHxkxUO5fNHtNiBsFDEDpsL1X2CZcopxD4jsz3keDSwHB9OA/viewform?usp=header",
       "category": "Nómina"
     },
     {
       "id": "cartas-trabajo",
       "title": "Cartas de Trabajo",
       "description": "Solicitud de constancias laborales",
-      "icon": "briefcase",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "icon": "envelope",
+      "url": "https://forms.microsoft.com/r/umKD1FFhpY",
       "category": "Documentos"
     },
     {
@@ -51,7 +51,7 @@
       "title": "Gastos Reembolsables",
       "description": "Registro de gastos para reembolso",
       "icon": "receipt",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSewyluYWJRVxZ_3CufQSWDEyPVV5eqmc62hqB5Tuvka1QvRbQ/viewform?usp=header",
       "category": "Finanzas"
     },
     {
@@ -59,7 +59,7 @@
       "title": "Solicitud de Vacaciones",
       "description": "Solicitud formal de período vacacional",
       "icon": "calendar",
-      "url": "https://REEMPLAZAR_CON_LINK_REAL",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSc3tJE-DGr3TYADEXa1pJaDcuNKWd2ir-76FhD1jlxx_KRswQ/viewform?usp=header",
       "category": "Beneficios"
     }
   ],
