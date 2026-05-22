@@ -3,49 +3,117 @@
 
 <div
   x-data="{
-    salario: '',
+    modo: 'fijo',
+    salarioMensual: '',
     cuota: 'abril',
-    get mesesPeriodo() {
-      return this.cuota === 'abril' ? 3 : 4;
-    },
+    mes1: '', mes2: '', mes3: '', mes4: '',
     resultado: null,
+    get labelCuota() {
+      const labels = {
+        abril:     'Cuota Abril   (16 dic → 15 abr)',
+        agosto:    'Cuota Agosto  (16 abr → 15 ago)',
+        diciembre: 'Cuota Dic.    (16 ago → 15 dic)'
+      };
+      return labels[this.cuota];
+    },
     calcular() {
-      const s = parseFloat(this.salario) || 0;
-      if (s <= 0) return;
-      const m = this.mesesPeriodo;
-      const decimoMensualAcumulado = parseFloat((s / 12).toFixed(2));
-      const montoDecimo = parseFloat(((s * m) / 12).toFixed(2));
-      this.resultado = { montoDecimo, decimoMensualAcumulado, meses: m };
+      this.resultado = null;
+      if (this.modo === 'fijo') {
+        const s = parseFloat(this.salarioMensual) || 0;
+        if (s <= 0) return;
+        const totalPeriodo = s * 4;
+        const montoDecimo  = parseFloat((totalPeriodo / 12).toFixed(2));
+        const acumuladoMes = parseFloat((s / 3).toFixed(2));
+        this.resultado = { totalPeriodo, montoDecimo, acumuladoMes };
+      } else {
+        const m1 = parseFloat(this.mes1) || 0;
+        const m2 = parseFloat(this.mes2) || 0;
+        const m3 = parseFloat(this.mes3) || 0;
+        const m4 = parseFloat(this.mes4) || 0;
+        const totalPeriodo = m1 + m2 + m3 + m4;
+        if (totalPeriodo <= 0) return;
+        const montoDecimo = parseFloat((totalPeriodo / 12).toFixed(2));
+        this.resultado = { totalPeriodo, montoDecimo, acumuladoMes: null };
+      }
     }
   }"
   class="space-y-6"
 >
+  <!-- Info -->
   <p class="text-xs text-[var(--color-muted)] bg-blue-50 border border-blue-100 rounded-lg px-4 py-2">
-    Art. 43 CT — Cuota Abril (3 meses) · Cuota Agosto (4 meses) · Cuota Diciembre (4 meses)
+    Art. 43 CT — Cada cuota cubre <strong>4 meses</strong> y equivale a <strong>1/3 del salario mensual</strong> (o total devengado en el período ÷ 12).
   </p>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <div>
-      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Salario mensual (B/.)</label>
-      <input
-        x-model="salario"
-        type="number"
-        min="0"
-        placeholder="Ej: 800"
-        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-      />
+  <!-- Cuota selector -->
+  <div>
+    <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Cuota a calcular</label>
+    <select
+      x-model="cuota"
+      class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+    >
+      <option value="abril">Cuota Abril — período 16 dic al 15 abr (4 meses)</option>
+      <option value="agosto">Cuota Agosto — período 16 abr al 15 ago (4 meses)</option>
+      <option value="diciembre">Cuota Diciembre — período 16 ago al 15 dic (4 meses)</option>
+    </select>
+  </div>
+
+  <!-- Mode toggle -->
+  <div class="flex gap-2">
+    <button
+      @click="modo = 'fijo'; resultado = null"
+      x-bind:class="modo === 'fijo' ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-bg)] text-[var(--color-muted)] border border-[var(--color-border)]'"
+      class="flex-1 py-2 text-sm font-medium rounded-lg transition-colors"
+    >
+      Salario fijo
+    </button>
+    <button
+      @click="modo = 'variable'; resultado = null"
+      x-bind:class="modo === 'variable' ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-bg)] text-[var(--color-muted)] border border-[var(--color-border)]'"
+      class="flex-1 py-2 text-sm font-medium rounded-lg transition-colors"
+    >
+      Con sobretiempos / recargos
+    </button>
+  </div>
+
+  <!-- Salario fijo -->
+  <div x-show="modo === 'fijo'">
+    <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Salario mensual (B/.)</label>
+    <input
+      x-model="salarioMensual"
+      type="number"
+      min="0"
+      placeholder="Ej: 1500"
+      class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
+    />
+    <p class="text-xs text-[var(--color-muted)] mt-1">Resultado = salario ÷ 3 (equivale a 4 meses × salario ÷ 12)</p>
+  </div>
+
+  <!-- Variable (con sobretiempos) -->
+  <div x-show="modo === 'variable'" style="display:none;">
+    <p class="text-sm text-[var(--color-muted)] mb-3">Ingresa lo devengado en cada mes del período (salario base + sobretiempos + recargos):</p>
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="block text-xs font-medium text-[var(--color-text)] mb-1">Mes 1 (B/.)</label>
+        <input x-model="mes1" type="number" min="0" placeholder="0.00"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--color-text)] mb-1">Mes 2 (B/.)</label>
+        <input x-model="mes2" type="number" min="0" placeholder="0.00"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--color-text)] mb-1">Mes 3 (B/.)</label>
+        <input x-model="mes3" type="number" min="0" placeholder="0.00"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-[var(--color-text)] mb-1">Mes 4 (B/.)</label>
+        <input x-model="mes4" type="number" min="0" placeholder="0.00"
+          class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]" />
+      </div>
     </div>
-    <div>
-      <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Cuota a calcular</label>
-      <select
-        x-model="cuota"
-        class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-      >
-        <option value="abril">Cuota Abril (enero–marzo, 3 meses)</option>
-        <option value="agosto">Cuota Agosto (abril–julio, 4 meses)</option>
-        <option value="diciembre">Cuota Diciembre (agosto–noviembre, 4 meses)</option>
-      </select>
-    </div>
+    <p class="text-xs text-[var(--color-muted)] mt-2">Resultado = (Mes 1 + Mes 2 + Mes 3 + Mes 4) ÷ 12</p>
   </div>
 
   <button
@@ -56,12 +124,16 @@
   </button>
 
   <div x-show="resultado" x-transition class="bg-green-50 border border-green-200 rounded-xl p-5 space-y-3" style="display:none;">
-    <h4 class="font-semibold text-green-800 mb-3">Resultado</h4>
+    <h4 class="font-semibold text-green-800 mb-1">Resultado — <span x-text="labelCuota"></span></h4>
     <div class="grid grid-cols-2 gap-2 text-sm">
-      <span class="text-[var(--color-muted)]">Meses del período:</span>
-      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="resultado?.meses + ' meses'"></span>
-      <span class="text-[var(--color-muted)]">Décimo mensual acumulado:</span>
-      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.decimoMensualAcumulado ?? 0).toFixed(2)"></span>
+      <span class="text-[var(--color-muted)]">Total devengado en el período:</span>
+      <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.totalPeriodo ?? 0).toFixed(2)"></span>
+      <template x-if="resultado?.acumuladoMes !== null">
+        <span class="text-[var(--color-muted)]">Acumulado mensual (salario ÷ 3):</span>
+      </template>
+      <template x-if="resultado?.acumuladoMes !== null">
+        <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.acumuladoMes ?? 0).toFixed(2)"></span>
+      </template>
     </div>
     <div class="border-t border-green-200 pt-3 flex justify-between items-center">
       <span class="font-semibold text-green-800">Monto de la cuota:</span>

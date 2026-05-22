@@ -31,15 +31,27 @@ export function calcVacation(params: {
 
 // ============================================================
 // DÉCIMO TERCER MES — Art. 43 del Código de Trabajo
-// Cuota Abril → 3 meses | Cuota Agosto → 4 meses | Cuota Dic → 4 meses
+// 3 cuotas iguales, cada una cubre 4 meses exactos:
+//   Cuota Abril    → 16 dic al 15 abr (4 meses)
+//   Cuota Agosto   → 16 abr al 15 ago (4 meses)
+//   Cuota Diciembre→ 16 ago al 15 dic (4 meses)
+// Fórmula: total devengado en el período (4 meses) / 12
+// Salario fijo: (salario × 4) / 12 = salario / 3
+// Con variables: (mes1 + mes2 + mes3 + mes4) / 12
 // ============================================================
 export function calcThirteenth(params: {
-  salarioMensual: number;
-  mesesEnPeriodo: number;
-}): { montoDecimo: number; decimoMensualAcumulado: number } {
-  const decimoMensualAcumulado = parseFloat((params.salarioMensual / 12).toFixed(2));
-  const montoDecimo = parseFloat(((params.salarioMensual * params.mesesEnPeriodo) / 12).toFixed(2));
-  return { montoDecimo, decimoMensualAcumulado };
+  totalDevengadoPeriodo: number; // suma de lo devengado en los 4 meses del período
+}): { montoDecimo: number; } {
+  const montoDecimo = parseFloat((params.totalDevengadoPeriodo / 12).toFixed(2));
+  return { montoDecimo };
+}
+
+// Helper para salario fijo: total del período = salario × 4
+export function calcThirteenthFijo(salarioMensual: number): { montoDecimo: number; acumuladoMes: number } {
+  const totalPeriodo = salarioMensual * 4;
+  const montoDecimo = parseFloat((totalPeriodo / 12).toFixed(2));
+  const acumuladoMes = parseFloat((salarioMensual / 3).toFixed(2));
+  return { montoDecimo, acumuladoMes };
 }
 
 // ============================================================
