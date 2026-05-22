@@ -9,7 +9,7 @@
     {
       "id": "nuevo-ingreso",
       "title": "Nuevo Ingreso",
-      "description": "Formulario de incorporación para nuevos empleados",
+      "description": "Formulario de incorporación para nuevos colaboradores. Completa todos los campos antes de tu fecha de inicio.",
       "icon": "user-plus",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLScwoLaxfGXiEdHGLLftyHxUsERxF1BlHSFbVZj483onX1zMzA/viewform?usp=header",
       "category": "Incorporación"
@@ -17,7 +17,7 @@
     {
       "id": "sobretiempos",
       "title": "Solicitud de Sobretiempos",
-      "description": "Envío de horas extras para aprobación",
+      "description": "Solo sobretiempos con aprobación previa. Plazo: 10 días después del cierre de quincena (1-15 y 16-fin de mes). Envíos tardíos se pagan en la quincena siguiente.",
       "icon": "clock",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSf4R8M1110KymvafC5XBo1xVrWwhTahkVIRdZkQ-aRV34_Wow/viewform?usp=header",
       "category": "Asistencia"
@@ -25,7 +25,7 @@
     {
       "id": "justificaciones",
       "title": "Justificaciones",
-      "description": "Justificación de ausencias e incapacidades",
+      "description": "Justificación de ausencias e incapacidades. Enviar a la brevedad posible con los documentos de respaldo correspondientes.",
       "icon": "file-text",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSePC-h9-U1cfxVONfht8DJLaesf5LwHkZVaQs6QW9IuRmP5rA/viewform?usp=header",
       "category": "Asistencia"
@@ -33,7 +33,7 @@
     {
       "id": "planilla",
       "title": "Consultas de Planilla",
-      "description": "Verificación de salario y descuentos",
+      "description": "Consultas respondidas en máximo 2 días hábiles. Incluye tu código de empleado y el período de la consulta.",
       "icon": "dollar-sign",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSeHxkxUO5fNHtNiBsFDEDpsL1X2CZcopxD4jsz3keDSwHB9OA/viewform?usp=header",
       "category": "Nómina"
@@ -41,7 +41,7 @@
     {
       "id": "cartas-trabajo",
       "title": "Cartas de Trabajo",
-      "description": "Solicitud de constancias laborales",
+      "description": "Solicitudes recibidas hasta el miércoles a medianoche. Confección el jueves, entrega el viernes.",
       "icon": "envelope",
       "url": "https://forms.microsoft.com/r/umKD1FFhpY",
       "category": "Documentos"
@@ -49,7 +49,7 @@
     {
       "id": "gastos",
       "title": "Gastos Reembolsables",
-      "description": "Registro de gastos para reembolso",
+      "description": "La factura debe incluir nombre y RUC de LAATS (RUC 1075307-1-553162 DV 63). Se reembolsa en la próxima planilla sin deducciones.",
       "icon": "receipt",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSewyluYWJRVxZ_3CufQSWDEyPVV5eqmc62hqB5Tuvka1QvRbQ/viewform?usp=header",
       "category": "Finanzas"
@@ -57,7 +57,7 @@
     {
       "id": "vacaciones",
       "title": "Solicitud de Vacaciones",
-      "description": "Solicitud formal de período vacacional",
+      "description": "Enviar firmado por tu supervisor en formato PDF. Debe llegar al menos 2 días antes del cierre de planilla previo a tus vacaciones.",
       "icon": "calendar",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSc3tJE-DGr3TYADEXa1pJaDcuNKWd2ir-76FhD1jlxx_KRswQ/viewform?usp=header",
       "category": "Beneficios"
@@ -66,33 +66,33 @@
   "faq": [
     {
       "id": 1,
-      "question": "¿Cuántos días de vacaciones me corresponden por ley?",
-      "answer": "Según el Código de Trabajo de Panamá (Art. 54), tienes derecho a 30 días de vacaciones por cada 11 meses trabajados. Si no has completado el período, se calcula proporcionalmente."
+      "question": "¿Cuándo recibiré mi carta de trabajo después de solicitarla?",
+      "answer": "Las solicitudes se reciben hasta el miércoles a medianoche. Las cartas se confeccionan el jueves y se entregan durante el viernes. Solicitudes recibidas después del miércoles serán procesadas en la semana siguiente. Usa el formulario 'Cartas de Trabajo' en Accesos Rápidos."
     },
     {
       "id": 2,
-      "question": "¿Cuándo se paga el décimo tercer mes?",
-      "answer": "El décimo tercer mes se paga en tres cuotas: 15 de abril (por enero-marzo), 15 de agosto (por abril-julio) y 15 de diciembre (por agosto-noviembre). Equivale a un mes de salario anual."
+      "question": "¿Cuál es el plazo para registrar mis sobretiempos?",
+      "answer": "Los sobretiempos deben enviarse dentro de los 10 días posteriores al cierre de cada quincena (1-15 y 16-fin de mes). Si se recibe después de ese plazo, el pago se realiza en la quincena siguiente. Ejemplo: un sobretiempo del 10 de julio enviado el 27 de julio no se paga el 30 de julio sino el 15 de agosto, ya que el corte cerró el 25 de julio."
     },
     {
       "id": 3,
-      "question": "¿Cuál es el recargo por horas extras en días feriados?",
-      "answer": "Según la Ley 44 de 1995 (Art. 26), las horas extras en días feriados o domingos se pagan al 200% del valor de la hora regular. Las horas extras diurnas se pagan al 125% y las nocturnas al 150%."
+      "question": "¿Cómo debo enviar mi solicitud de vacaciones?",
+      "answer": "El formulario debe estar firmado por tu supervisor y enviarse en formato PDF (escaneado). Debe llegar al menos 2 días antes del cierre de planilla previo a tu fecha de inicio de vacaciones. Ejemplo: si sales el 1 de octubre, envíala a más tardar el 28 de septiembre."
     },
     {
       "id": 4,
-      "question": "¿Qué incluye una liquidación por despido sin justa causa?",
-      "answer": "Una liquidación por despido sin justa causa incluye: prima de antigüedad (1 semana de salario por año trabajado), vacaciones proporcionales pendientes, décimo tercer mes proporcional del año en curso, y preaviso según tiempo de servicio."
+      "question": "¿Qué datos debe tener mi factura para el reembolso de gastos?",
+      "answer": "Toda factura debe incluir el nombre y RUC de la empresa: LAATS INT - LATIN AMERICA AERONAUTICAL TECHNICAL SUPPORT INTERNATIONAL, RUC 1075307-1-553162 DV 63. Facturas sin estos datos no podrán ser reembolsadas. El reembolso se procesa en la próxima planilla sin deducciones."
     },
     {
       "id": 5,
-      "question": "¿Cómo solicito una carta de trabajo?",
-      "answer": "Usa el formulario 'Cartas de Trabajo' en la sección de Accesos Rápidos. Indica el tipo de constancia que necesitas y el tiempo de entrega estimado es de 3 días hábiles."
+      "question": "¿En cuánto tiempo responden mis consultas de planilla?",
+      "answer": "Toda consulta será atendida en un lapso no superior a 2 días hábiles posteriores a la fecha en que se realizó. Usa el formulario 'Consultas de Planilla' en Accesos Rápidos e incluye tu código de empleado y el período de la consulta para agilizar la respuesta."
     },
     {
       "id": 6,
-      "question": "¿A quién contacto para dudas sobre mi planilla?",
-      "answer": "Para consultas sobre tu planilla, usa el formulario 'Consultas de Planilla' en Accesos Rápidos, o escribe directamente a asistentepanama@laats.net."
+      "question": "¿Cuándo se paga el décimo tercer mes y cómo se calcula?",
+      "answer": "El décimo tercer mes se paga en tres cuotas de 4 meses cada una: 15 de abril (período 16 dic–15 abr), 15 de agosto (período 16 abr–15 ago) y 15 de diciembre (período 16 ago–15 dic). El monto equivale a un tercio del salario mensual por cuota (o la suma de lo devengado en los 4 meses dividido entre 12 si hay sobretiempos o recargos)."
     }
   ]
 }

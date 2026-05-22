@@ -136,8 +136,11 @@
       </template>
     </div>
     <div class="border-t border-green-200 pt-3 flex justify-between items-center">
-      <span class="font-semibold text-green-800">Monto de la cuota:</span>
+      <span class="font-semibold text-green-800">Monto estimado de la cuota:</span>
       <span class="font-mono text-2xl font-bold text-green-700" x-text="'B/. ' + (resultado?.montoDecimo ?? 0).toFixed(2)"></span>
     </div>
+    <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mt-2 leading-relaxed">
+      ⚠️ <strong>Referencia orientativa.</strong> Este cálculo tiene como objetivo brindar una referencia de cómo se obtienen los montos, pero el valor real siempre estará sujeto a la realidad particular de cada empleado, incluyendo sobretiempos, recargos y otros ingresos variables del período.
+    </p>
   </div>
 </div>

@@ -63,8 +63,11 @@
       <span class="font-mono font-semibold text-[var(--color-text)]" x-text="(resultado?.diasCorresponden ?? 0) + ' días'"></span>
     </div>
     <div class="border-t border-green-200 pt-3 flex justify-between items-center">
-      <span class="font-semibold text-green-800">Monto de vacaciones:</span>
+      <span class="font-semibold text-green-800">Monto estimado:</span>
       <span class="font-mono text-2xl font-bold text-green-700" x-text="'B/. ' + (resultado?.montoVacaciones ?? 0).toFixed(2)"></span>
     </div>
+    <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mt-2 leading-relaxed">
+      ⚠️ <strong>Referencia orientativa.</strong> El valor real dependerá del salario efectivamente devengado por el empleado, incluyendo sobretiempos y otros ingresos variables del período.
+    </p>
   </div>
 </div>
