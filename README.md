@@ -63,7 +63,7 @@ No necesitas instalar nada ni usar la terminal. Todo se hace desde GitHub direct
   "category": "Categoría"
 }
 ```
-4. Íconos disponibles: `user-plus`, `clock`, `file-text`, `dollar-sign`, `briefcase`, `receipt`, `calendar`
+4. Íconos disponibles: `user-plus`, `clock`, `file-text`, `dollar-sign`, `receipt`, `calendar`, `envelope`, `user-question`
 
 ---
 
@@ -73,7 +73,7 @@ Las calculadoras están basadas en la legislación laboral vigente de Panamá:
 
 | Calculadora | Ley aplicada |
 |-------------|-------------|
-| Sobretiempos | Ley 44 de 1995, Art. 26 |
+| Sobretiempos | Ley 44 de 1995, Art. 26 — diferencia entre empleado Fijo (÷182.5h) y Temporal (÷208h) |
 | Vacaciones | Código de Trabajo, Art. 54 |
 | Décimo tercer mes | Código de Trabajo, Art. 43 |
 | Liquidación | Ley 44 + Código de Trabajo |
