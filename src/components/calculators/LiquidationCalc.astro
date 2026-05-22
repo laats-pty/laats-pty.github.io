@@ -92,8 +92,11 @@
       </div>
     </div>
     <div class="border-t border-green-200 pt-4 flex justify-between items-center">
-      <span class="text-lg font-bold text-green-800">Total liquidación:</span>
+      <span class="text-lg font-bold text-green-800">Total estimado:</span>
       <span class="font-mono text-3xl font-bold text-green-700" x-text="'B/. ' + (resultado?.total ?? 0).toFixed(2)"></span>
     </div>
+    <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mt-2 leading-relaxed">
+      ⚠️ <strong>Esta es una estimación de referencia.</strong> El monto real de la liquidación siempre dependerá de los salarios efectivamente devengados por el empleado durante su relación laboral, incluyendo sobretiempos, recargos y otros ingresos variables. Para el cálculo oficial, consulte con el departamento de RRHH.
+    </p>
   </div>
 </div>
