@@ -71,7 +71,7 @@
     },
     {
       "id": 2,
-      "question": "¿Cuál es el plazo para registrar mis sobretiempos?",
+      "question": "¿Cuál es el plazo para registrar mis sobretiempos? (Temporales)",
       "answer": "Los sobretiempos deben enviarse dentro de los 10 días posteriores al cierre de cada quincena (1-15 y 16-fin de mes). Si se recibe después de ese plazo, el pago se realiza en la quincena siguiente. Ejemplo: un sobretiempo del 10 de julio enviado el 27 de julio no se paga el 30 de julio sino el 15 de agosto, ya que el corte cerró el 25 de julio."
     },
     {
