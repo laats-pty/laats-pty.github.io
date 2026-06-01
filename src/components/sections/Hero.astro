@@ -5,30 +5,45 @@ interface Props {
 const { site } = Astro.props;
 ---
 
-<section class="bg-[var(--color-primary)] py-20 px-4 md:px-8 text-center">
-  <div class="max-w-3xl mx-auto">
-    <div class="inline-block bg-white rounded-2xl px-8 py-4 mb-8 shadow-lg">
-      <img
-        src={site.logoUrl}
-        alt="LAATS Safety and Quality Services International Panamá"
-        class="h-20 w-auto mx-auto"
-      />
-    </div>
-    <h1 class="text-white text-4xl md:text-5xl font-bold mb-4">{site.name}</h1>
-    <p class="text-white/70 text-lg md:text-xl mb-10">{site.tagline}</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a
-        href="#accesos"
-        class="inline-block bg-[var(--color-accent)] text-[var(--color-primary-dark)] font-semibold px-8 py-3 rounded-lg hover:brightness-110 transition-all"
-      >
-        Ver Accesos Rápidos
-      </a>
-      <a
-        href="#calculadoras"
-        class="inline-block bg-white/10 text-white border border-white/30 font-semibold px-8 py-3 rounded-lg hover:bg-white/20 transition-all"
-      >
-        Ir a Calculadoras
-      </a>
+<section id="inicio" class="relative bg-[var(--color-primary)] overflow-hidden">
+  <!-- Grain overlay for depth -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <!-- Subtle radial highlight top-right -->
+  <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/5 blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[var(--color-accent)]/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-6xl mx-auto px-4 md:px-8 py-20 md:py-28">
+    <div class="flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex justify-center md:justify-start">
+        <div class="bg-white rounded-xl px-6 py-4 shadow-[0_4px_24px_rgba(0,0,0,0.18)] border border-white/20">
+          <img
+            src={site.logoUrl}
+            alt="LAATS Safety and Quality Services International Panamá"
+            class="h-16 md:h-20 w-auto"
+          />
+        </div>
+      </div>
+      <!-- Text -->
+      <div class="text-center md:text-left">
+        <p class="text-[var(--color-accent)] text-sm font-semibold tracking-widest uppercase mb-3">Portal de Recursos Humanos</p>
+        <h1 class="text-white text-4xl md:text-5xl font-bold leading-[1.1] mb-4">{site.name}</h1>
+        <p class="text-white/65 text-lg md:text-xl mb-8 max-w-[52ch]">{site.tagline}</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+          <a
+            href="#accesos"
+            class="inline-block bg-[var(--color-accent)] text-[var(--color-primary-dark)] font-semibold px-8 py-3 rounded-lg hover:brightness-105 hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 transition-all duration-200"
+          >
+            Ver accesos rápidos
+          </a>
+          <a
+            href="#calculadoras"
+            class="inline-block bg-white/10 text-white border border-white/20 font-semibold px-8 py-3 rounded-lg hover:bg-white/20 hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 transition-all duration-200"
+          >
+            Ir a calculadoras
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>

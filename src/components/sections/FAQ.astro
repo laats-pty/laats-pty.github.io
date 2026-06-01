@@ -9,22 +9,28 @@ const { items } = Astro.props;
 const safeId = (id: number) => parseInt(String(id), 10) || 0;
 ---
 
-<div class="py-16 px-4 md:px-8 bg-[var(--color-surface)]">
+<section id="faq" class="py-16 px-4 md:px-8 bg-[var(--color-surface)]">
   <div class="max-w-3xl mx-auto">
-    <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-2 text-center">Preguntas Frecuentes</h2>
-    <p class="text-[var(--color-muted)] text-center mb-10">Respuestas a las dudas más comunes sobre tus derechos laborales</p>
+    <div class="mb-10">
+      <p class="text-[var(--color-accent)] text-xs font-semibold tracking-widest uppercase mb-2">Soporte</p>
+      <h2 class="text-3xl font-bold text-[var(--color-text)] mb-2">Preguntas frecuentes</h2>
+      <p class="text-[var(--color-muted)] max-w-[48ch]">Respuestas a las dudas más comunes sobre tus derechos laborales.</p>
+    </div>
 
-    <div x-data="{ open: null }" class="space-y-3">
+    <div x-data="{ open: null }" class="space-y-2">
       {items.map((item) => (
-        <div class="border border-[var(--color-border)] rounded-xl overflow-hidden">
+        <div
+          x-bind:class={`open === ${safeId(item.id)} ? 'border-l-[3px] border-[var(--color-primary)] bg-[var(--color-bg)]' : 'border-l-[3px] border-transparent bg-[var(--color-bg)]'`}
+          class="rounded-r-xl overflow-hidden transition-all duration-200"
+        >
           <button
             x-on:click={`open = open === ${safeId(item.id)} ? null : ${safeId(item.id)}`}
-            class="w-full flex items-center justify-between px-6 py-4 text-left font-medium text-[var(--color-text)] hover:bg-[var(--color-bg)] transition-colors"
+            class="w-full flex items-center justify-between px-5 py-4 text-left font-medium text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--color-primary)]"
           >
-            <span>{item.question}</span>
+            <span class="pr-4">{item.question}</span>
             <svg
-              x-bind:class={`open === ${safeId(item.id)} ? 'rotate-180' : ''`}
-              class="w-5 h-5 text-[var(--color-primary)] flex-shrink-0 ml-4 transition-transform duration-200"
+              x-bind:class={`open === ${safeId(item.id)} ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-muted)]'`}
+              class="w-5 h-5 flex-shrink-0 transition-transform duration-200"
               fill="none" stroke="currentColor" viewBox="0 0 24 24"
             >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -33,18 +39,18 @@ const safeId = (id: number) => parseInt(String(id), 10) || 0;
           <div
             x-show={`open === ${safeId(item.id)}`}
             x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-start="opacity-0 -translate-y-1"
             x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-2"
-            class="px-6 pb-5"
+            x-transition:leave-end="opacity-0 -translate-y-1"
+            class="px-5 pb-5"
             style="display: none;"
           >
-            <p class="text-[var(--color-muted)] leading-relaxed">{item.answer}</p>
+            <p class="text-[var(--color-muted)] leading-relaxed max-w-[65ch]">{item.answer}</p>
           </div>
         </div>
       ))}
     </div>
   </div>
-</div>
+</section>

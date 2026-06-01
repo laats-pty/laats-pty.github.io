@@ -28,27 +28,35 @@ const icons: Record<string, string> = {
 };
 ---
 
-<div class="py-16 px-4 md:px-8">
+<section id="accesos" class="py-16 px-4 md:px-8">
   <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-semibold text-[var(--color-text)] mb-2 text-center">Accesos Rápidos</h2>
-    <p class="text-[var(--color-muted)] text-center mb-10">Todos tus formularios en un solo lugar</p>
+    <div class="mb-10">
+      <p class="text-[var(--color-accent)] text-xs font-semibold tracking-widest uppercase mb-2">Formularios</p>
+      <h2 class="text-3xl font-bold text-[var(--color-text)] mb-2">Accesos rápidos</h2>
+      <p class="text-[var(--color-muted)] max-w-[48ch]">Todos tus trámites de recursos humanos en un solo lugar.</p>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {links.map((link) => (
         <a
           href={safeUrl(link.url)}
           target="_blank"
           rel="noopener noreferrer"
-          class="group bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+          class="group bg-[var(--color-surface)] rounded-xl p-6 flex flex-col gap-3 transition-all duration-200"
+          style="box-shadow: var(--shadow-card);"
+          onmouseover="this.style.boxShadow='var(--shadow-card-hover)'; this.style.transform='translateY(-3px)';"
+          onmouseout="this.style.boxShadow='var(--shadow-card)'; this.style.transform='';"
+          onmousedown="this.style.transform='translateY(-1px) scale(0.99)';"
+          onmouseup="this.style.transform='translateY(-3px)';"
         >
           <div class="w-10 h-10 text-[var(--color-primary)]" set:html={icons[link.icon] ?? icons['file-text']} />
           <div>
-            <span class="inline-block text-xs font-medium bg-[var(--color-accent)]/15 text-[var(--color-primary-dark)] px-2 py-0.5 rounded-full mb-2">{link.category}</span>
+            <span class="inline-block text-xs font-semibold bg-[var(--color-accent)]/20 text-[var(--color-primary-dark)] px-2 py-0.5 rounded mb-2">{link.category}</span>
             <h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{link.title}</h3>
-            <p class="text-sm text-[var(--color-muted)] mt-1">{link.description}</p>
+            <p class="text-sm text-[var(--color-muted)] mt-1 leading-relaxed">{link.description}</p>
           </div>
           <div class="mt-auto flex items-center text-[var(--color-primary)] text-sm font-medium">
             Abrir formulario
-            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>
@@ -56,4 +64,4 @@ const icons: Record<string, string> = {
       ))}
     </div>
   </div>
-</div>
+</section>
