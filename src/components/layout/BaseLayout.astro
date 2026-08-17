@@ -16,6 +16,10 @@ const ogImage = '/og-image.png';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {/* Portal interno de empleados: no debe aparecer en buscadores.
+        No agregar "Disallow: /" en robots.txt — bloquear el rastreo impide
+        que Google llegue a leer este noindex y deje de indexar el sitio. */}
+    <meta name="robots" content="noindex, nofollow" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />

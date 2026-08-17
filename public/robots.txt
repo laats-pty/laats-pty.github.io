@@ -1,0 +1,13 @@
+# Portal interno de RRHH de LAATS Panama. No debe aparecer en buscadores.
+#
+# La exclusion se hace con <meta name="robots" content="noindex, nofollow">
+# en src/components/layout/BaseLayout.astro, NO desde este archivo.
+#
+# NO poner "Disallow: /" aqui. robots.txt bloquea el RASTREO, no la
+# indexacion: si se bloquea el rastreo, Google nunca lee el noindex y las
+# URLs que ya estan indexadas se quedan en el indice, solo sin descripcion.
+# Hay que permitir el rastreo justamente para que el noindex se vea y
+# surta efecto.
+
+User-agent: *
+Allow: /
