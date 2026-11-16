@@ -3,38 +3,59 @@ interface Props {
   logo: string;
 }
 const { logo } = Astro.props;
+
+const links = [
+  { href: '#accesos', label: 'Accesos rápidos' },
+  { href: '#calculadoras', label: 'Calculadoras' },
+  { href: '#faq', label: 'Preguntas frecuentes' },
+];
 ---
 
 <header
-  x-data="{ scrolled: false }"
-  x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 20 })"
-  x-bind:class="scrolled ? 'shadow-md' : 'shadow-none'"
-  class="fixed top-0 left-0 right-0 z-50 h-16 bg-[var(--color-primary)] transition-shadow duration-200"
+  x-data="{ scrolled: false, open: false }"
+  x-on:scroll.window.passive="scrolled = window.scrollY > 20"
+  x-on:keydown.escape.window="open = false"
+  x-bind:class="scrolled || open ? 'shadow-md' : 'shadow-none'"
+  class="on-dark fixed top-0 left-0 right-0 z-50 bg-[var(--color-primary)] transition-shadow duration-200"
 >
-  <div class="max-w-6xl mx-auto px-4 md:px-8 h-full flex items-center justify-between">
-    <a href="#inicio" class="flex items-center gap-2">
-      <div class="bg-white rounded-md px-2 py-1 flex items-center">
-        <img src={logo} alt="LAATS Safety and Quality Services" class="h-8 w-auto" />
-      </div>
+  <div class="max-w-6xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+    <a href="#inicio" class="flex items-center gap-2 rounded-md" aria-label="Portal RRHH LAATS Panamá, ir al inicio">
+      <span class="bg-white rounded-md px-2 py-1 flex items-center">
+        <img src={logo} alt="" width="891" height="437" class="h-8 w-auto" />
+      </span>
       <span class="text-white font-semibold text-sm leading-tight hidden sm:block">Portal RRHH<br /><span class="text-[var(--color-accent)] text-xs font-normal">LAATS Panamá</span></span>
     </a>
-    <nav class="hidden md:flex items-center gap-6">
-      <a href="#accesos" class="text-white/80 hover:text-white text-sm font-medium transition-colors">Accesos Rápidos</a>
-      <a href="#calculadoras" class="text-white/80 hover:text-white text-sm font-medium transition-colors">Calculadoras</a>
-      <a href="#faq" class="text-white/80 hover:text-white text-sm font-medium transition-colors">FAQ</a>
+    <nav class="hidden md:flex items-center gap-6" aria-label="Secciones">
+      {links.map((l) => (
+        <a href={l.href} class="text-white/80 hover:text-white text-sm font-medium transition-colors rounded">{l.label}</a>
+      ))}
     </nav>
-    <!-- Mobile menu button -->
     <button
-      x-data="{ open: false }"
-      @click="open = !open"
-      class="md:hidden text-white p-2"
-      aria-label="Menú"
+      type="button"
+      x-on:click="open = !open"
+      x-bind:aria-expanded="open.toString()"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+      aria-label="Menú de secciones"
+      class="md:hidden text-white p-2 -mr-2 rounded-md"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <path x-show="open" style="display:none;" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6l12 12M18 6L6 18" />
       </svg>
     </button>
   </div>
+  <nav
+    id="menu-movil"
+    x-show="open"
+    style="display:none;"
+    aria-label="Secciones"
+    class="md:hidden border-t border-white/10 bg-[var(--color-primary)] px-4 py-2"
+  >
+    {links.map((l) => (
+      <a href={l.href} x-on:click="open = false" class="block px-2 py-3 text-white font-medium rounded-md">{l.label}</a>
+    ))}
+  </nav>
 </header>
-<!-- Spacer for fixed header -->
+<!-- Espaciador del encabezado fijo -->
 <div class="h-16"></div>
