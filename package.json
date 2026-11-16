@@ -9,11 +9,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "node --experimental-strip-types --test \"tests/*.test.ts\"",
     "astro": "astro"
   },
   "dependencies": {
     "@tailwindcss/vite": "4.3.3",
     "astro": "6.3.7",
-    "tailwindcss": "4.3.0"
+    "tailwindcss": "4.3.3"
   }
 }
