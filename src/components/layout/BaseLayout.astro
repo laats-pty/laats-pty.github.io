@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const ogImage = '/og-image.png';
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -15,22 +15,43 @@ const ogImage = '/og-image.png';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
     <meta name="description" content={description} />
     {/* Portal interno de empleados: no debe aparecer en buscadores.
         No agregar "Disallow: /" en robots.txt — bloquear el rastreo impide
         que Google llegue a leer este noindex y deje de indexar el sitio. */}
     <meta name="robots" content="noindex, nofollow" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="theme-color" content="#1B3A6B" />
+    {/* form-action 'none': la página no tiene formularios propios; los
+        trámites son enlaces a Google/Microsoft Forms, que no pasan por CSP.
+        'unsafe-eval' lo exige el build estándar de Alpine (new Function). */}
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'https:' https://forms.microsoft.com https://docs.google.com;"
+      content="default-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
     />
+    {/* Vista previa al compartir el enlace (WhatsApp, Teams). Sin og:image:
+        no existe una imagen oficial todavía; ver propuestas de la auditoría. */}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="es_PA" />
+    <meta name="twitter:card" content="summary" />
+    {/* favicon.ico es el ícono oficial de laats.net (PNG de 150×150). */}
+    <link rel="icon" href="/favicon.ico" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap"
+    />
+    {/* Orden obligatorio: primero los componentes (se registran en
+        alpine:init) y después Alpine. Ambos son diferidos y se ejecutan en
+        el orden del documento. */}
+    <script>
+      import '../../scripts/calculators';
+    </script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
@@ -38,7 +59,7 @@ const ogImage = '/og-image.png';
       crossorigin="anonymous"
     ></script>
   </head>
-  <body class="bg-[var(--color-bg)]">
+  <body>
     <a href="#main-content" class="skip-link">Ir al contenido principal</a>
     <slot />
   </body>
