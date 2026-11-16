@@ -1,343 +1,91 @@
 ---
+import { OVERTIME_DIVISORS, OVERTIME_GROUPS, formatFactor } from '../../lib/calculations';
 ---
 
-<div
-  x-data="{
-    salario: '',
-    horas: {
-      SDiu:      0,
-      SMix:      0,
-      SNoc:      0,
-      SDiuRc:    0,
-      SMixRc:    0,
-      SNocRc:    0,
-      SDiuDom:   0,
-      SMixDom:   0,
-      SNocDom:   0,
-      SDiuDomRc: 0,
-      SMixDomRc: 0,
-      SNocDomRc: 0,
-      Feriado:   0,
-    },
-    factores: {
-      SDiu:      1.25,
-      SMix:      1.50,
-      SNoc:      1.75,
-      SDiuRc:    2.1875,
-      SMixRc:    2.625,
-      SNocRc:    3.0625,
-      SDiuDom:   1.875,
-      SMixDom:   2.25,
-      SNocDom:   2.625,
-      SDiuDomRc: 3.28125,
-      SMixDomRc: 3.9375,
-      SNocDomRc: 4.59375,
-      Feriado:   2.50,
-    },
-    tipo: 'fijo',
-    resultado: null,
-    get divisor() {
-      return this.tipo === 'temporal' ? 208 : 182.5;
-    },
-    get salarioHora() {
-      return (parseFloat(this.salario) || 0) / this.divisor;
-    },
-    monto(codigo) {
-      return this.salarioHora * this.factores[codigo] * (parseFloat(this.horas[codigo]) || 0);
-    },
-    calcular() {
-      const s = parseFloat(this.salario) || 0;
-      if (s <= 0) return;
-      const sh = s / this.divisor;
-      let total = 0;
-      const detalle = {};
-      for (const cod in this.factores) {
-        const hrs = parseFloat(this.horas[cod]) || 0;
-        const monto = sh * this.factores[cod] * hrs;
-        detalle[cod] = { hrs, monto: parseFloat(monto.toFixed(2)) };
-        total += monto;
-      }
-      this.resultado = { salarioHora: sh, detalle, total: parseFloat(total.toFixed(2)) };
-    },
-    tieneHoras() {
-      return Object.values(this.horas).some(h => parseFloat(h) > 0);
-    }
-  }"
-  class="space-y-6"
->
-  <!-- Referencia legal -->
-  <p class="text-xs text-[var(--color-muted)] bg-blue-50 border border-blue-100 rounded-lg px-4 py-2">
-    Ley 44 de 1995, Art. 26 — Factores según estructura PayDay. El recargo ×1.75 aplica a partir de la 3.ª hora diaria O la 9.ª hora semanal de sobretiempo.
+<div x-data="overtimeCalc" x-on:input="invalidar()" class="space-y-6">
+  <p class="note-legal">
+    Ley 44 de 1995, Art. 26 — Factores según estructura PayDay. El recargo ×1.75 aplica a partir de la 3.ª hora diaria o la 9.ª hora semanal de sobretiempo.
   </p>
 
-  <!-- Tipo de empleado -->
-  <div>
-    <label class="block text-sm font-medium text-[var(--color-text)] mb-2">Tipo de empleado (rotación)</label>
+  <div role="group" aria-labelledby="ot-tipo-label">
+    <p id="ot-tipo-label" class="field-label !mb-2">Tipo de empleado (rotación)</p>
     <div class="flex gap-2">
-      <button
-        @click="tipo = 'fijo'; resultado = null"
-        x-bind:class="tipo === 'fijo' ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-bg)] text-[var(--color-muted)] border border-[var(--color-border)]'"
-        class="flex-1 py-2 text-sm font-medium rounded-lg transition-colors"
-      >
-        Fijo (6×2) — ÷ 182.5 h
+      <button type="button" class="toggle" aria-pressed="true" x-bind:aria-pressed="(tipo === 'fijo').toString()" x-on:click="setTipo('fijo')">
+        Fijo (6×2) <span class="whitespace-nowrap">÷ {OVERTIME_DIVISORS.fijo} h</span>
       </button>
-      <button
-        @click="tipo = 'temporal'; resultado = null"
-        x-bind:class="tipo === 'temporal' ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-bg)] text-[var(--color-muted)] border border-[var(--color-border)]'"
-        class="flex-1 py-2 text-sm font-medium rounded-lg transition-colors"
-      >
-        Temporal (6×1) — ÷ 208 h
+      <button type="button" class="toggle" aria-pressed="false" x-bind:aria-pressed="(tipo === 'temporal').toString()" x-on:click="setTipo('temporal')">
+        Temporal (6×1) <span class="whitespace-nowrap">÷ {OVERTIME_DIVISORS.temporal} h</span>
       </button>
     </div>
   </div>
 
-  <!-- Salario -->
   <div class="max-w-xs">
-    <label class="block text-sm font-medium text-[var(--color-text)] mb-1">Salario mensual (B/.)</label>
-    <input
-      x-model="salario"
-      type="number" min="0" placeholder="Ej: 1000"
-      class="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30 focus:border-[var(--color-primary)]"
-    />
-    <p class="text-xs text-[var(--color-muted)] mt-1">
-      Salario/hora: <strong x-text="salario ? 'B/. ' + salarioHora.toFixed(4) : '—'"></strong>
-      <span class="ml-1 text-[var(--color-muted)]" x-text="'(÷ ' + divisor + ' h)'"></span>
+    <label for="ot-salario" class="field-label">Salario mensual (B/.)</label>
+    <input id="ot-salario" x-model="salario" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Ej: 1000" class="field" aria-describedby="ot-salario-hora" />
+    <p id="ot-salario-hora" class="text-xs text-[var(--color-muted)] mt-1">
+      Salario/hora: <strong x-text="salarioHoraTexto">—</strong>
+      <span x-text="'(÷ ' + divisor + ' h)'">(÷ {OVERTIME_DIVISORS.fijo} h)</span>
     </p>
   </div>
 
-  <!-- Tabla de horas por tipo -->
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm border-collapse">
-      <thead>
-        <tr class="bg-[var(--color-bg)] text-left">
-          <th class="px-3 py-2 font-semibold text-[var(--color-text)] border-b border-[var(--color-border)] w-1/2">Tipo de Sobretiempo</th>
-          <th class="px-3 py-2 font-semibold text-[var(--color-text)] border-b border-[var(--color-border)] text-center">Factor</th>
-          <th class="px-3 py-2 font-semibold text-[var(--color-text)] border-b border-[var(--color-border)] text-center w-24">Horas</th>
-          <th class="px-3 py-2 font-semibold text-[var(--color-text)] border-b border-[var(--color-border)] text-right">Monto</th>
-        </tr>
-      </thead>
+  <table class="w-full text-sm border-collapse">
+    <caption class="sr-only">Horas de sobretiempo por tipo</caption>
+    <thead>
+      <tr class="bg-[var(--color-bg)] text-left">
+        <th scope="col" class="px-2 sm:px-3 py-2 font-semibold border-b border-[var(--color-border)]">Tipo de sobretiempo</th>
+        <th scope="col" class="hidden sm:table-cell px-3 py-2 font-semibold border-b border-[var(--color-border)] text-center">Factor</th>
+        <th scope="col" class="px-2 sm:px-3 py-2 font-semibold border-b border-[var(--color-border)] text-center w-20 sm:w-24">Horas</th>
+        <th scope="col" class="px-2 sm:px-3 py-2 font-semibold border-b border-[var(--color-border)] text-right w-24 sm:w-28">Monto</th>
+      </tr>
+    </thead>
+    {OVERTIME_GROUPS.map((group) => (
       <tbody>
-        <!-- DÍA REGULAR SIN RECARGO -->
-        <tr><td colspan="4" class="px-3 py-1.5 text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">Día REGULAR — Sin Recargo</td></tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Diurno DiaNor</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×1.25</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SDiu" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SDiu > 0 ? 'B/. ' + monto('SDiu').toFixed(2) : '—'"></td>
+        <tr>
+          <th scope="colgroup" colspan="4" class="px-2 sm:px-3 py-1.5 text-left text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">{group.title}</th>
         </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Mixto DiaNor</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×1.50</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SMix" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SMix > 0 ? 'B/. ' + monto('SMix').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Nocturno DiaNor</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×1.75</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SNoc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SNoc > 0 ? 'B/. ' + monto('SNoc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <!-- DÍA REGULAR CON RECARGO -->
-        <tr><td colspan="4" class="px-3 py-1.5 text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">Día REGULAR — Con Recargo (×1.75)</td></tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Diurno DiaNor Rec</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×2.1875</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SDiuRc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SDiuRc > 0 ? 'B/. ' + monto('SDiuRc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Mixto DiaNor Rec</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×2.625</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SMixRc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SMixRc > 0 ? 'B/. ' + monto('SMixRc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Nocturno DiaNor Rec</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×3.0625</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SNocRc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SNocRc > 0 ? 'B/. ' + monto('SNocRc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <!-- DOMINGO SIN RECARGO -->
-        <tr><td colspan="4" class="px-3 py-1.5 text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">Domingo / Día de Descanso — Sin Recargo</td></tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Diurno DiaDes</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×1.875</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SDiuDom" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SDiuDom > 0 ? 'B/. ' + monto('SDiuDom').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Mixto DiaDes</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×2.25</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SMixDom" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SMixDom > 0 ? 'B/. ' + monto('SMixDom').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Nocturno DiaDes</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×2.625</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SNocDom" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SNocDom > 0 ? 'B/. ' + monto('SNocDom').toFixed(2) : '—'"></td>
-        </tr>
-
-        <!-- DOMINGO CON RECARGO -->
-        <tr><td colspan="4" class="px-3 py-1.5 text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">Domingo / Día de Descanso — Con Recargo (×1.75)</td></tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Diurno DiaDes Rec</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×3.28125</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SDiuDomRc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SDiuDomRc > 0 ? 'B/. ' + monto('SDiuDomRc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Mixto DiaDes Rec</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×3.9375</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SMixDomRc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SMixDomRc > 0 ? 'B/. ' + monto('SMixDomRc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)] border-b border-[var(--color-border)]/50">ST Nocturno DiaDes Rec</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)] border-b border-[var(--color-border)]/50">×4.59375</td>
-          <td class="px-3 py-2 border-b border-[var(--color-border)]/50">
-            <input x-model="horas.SNocDomRc" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)] border-b border-[var(--color-border)]/50"
-            x-text="salario && horas.SNocDomRc > 0 ? 'B/. ' + monto('SNocDomRc').toFixed(2) : '—'"></td>
-        </tr>
-
-        <!-- FERIADO NACIONAL -->
-        <tr><td colspan="4" class="px-3 py-1.5 text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">Feriado Nacional</td></tr>
-
-        <tr class="hover:bg-[var(--color-bg)]">
-          <td class="px-3 py-2 text-[var(--color-text)]">ST Feriado Nacional</td>
-          <td class="px-3 py-2 text-center font-mono text-[var(--color-muted)]">×2.50</td>
-          <td class="px-3 py-2">
-            <input x-model="horas.Feriado" type="number" min="0" step="0.5" placeholder="0"
-              class="w-full border border-[var(--color-border)] rounded px-2 py-1 text-sm text-center focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]" />
-          </td>
-          <td class="px-3 py-2 text-right font-mono text-[var(--color-text)]"
-            x-text="salario && horas.Feriado > 0 ? 'B/. ' + monto('Feriado').toFixed(2) : '—'"></td>
-        </tr>
+        {group.categories.map((c) => (
+          <tr class="hover:bg-[var(--color-bg)] border-b border-[var(--color-border)]/60">
+            <th scope="row" class="px-2 sm:px-3 py-2 text-left font-normal">
+              {c.label}
+              <span class="sm:hidden block font-mono text-xs text-[var(--color-muted)]">{formatFactor(c.factor)}</span>
+            </th>
+            <td class="hidden sm:table-cell px-3 py-2 text-center font-mono text-[var(--color-muted)]">{formatFactor(c.factor)}</td>
+            <td class="px-2 sm:px-3 py-2">
+              <input x-model={`horas.${c.code}`} type="number" inputmode="decimal" min="0" step="0.5" placeholder="0" class="field field-sm" aria-label={`Horas de ${c.label}`} />
+            </td>
+            <td class="px-2 sm:px-3 py-2 text-right font-mono" x-text={`montoLinea('${c.code}')`}>—</td>
+          </tr>
+        ))}
       </tbody>
-    </table>
+    ))}
+  </table>
+
+  <div class="space-y-2">
+    <button type="button" class="btn-primary" x-on:click="calcular()">Calcular total sobretiempos</button>
+    <p class="form-error" role="alert" x-show="error" x-text="error" style="display:none;"></p>
   </div>
 
-  <button
-    @click="calcular()"
-    class="bg-[var(--color-primary)] text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
-  >
-    Calcular total sobretiempos
-  </button>
-
-  <!-- Resultado -->
-  <div x-show="resultado" x-transition class="bg-green-50 border border-green-200 rounded-xl p-5 space-y-3" style="display:none;">
-    <h4 class="font-semibold text-green-800 mb-1">Resumen de Sobretiempos</h4>
-    <div class="text-sm text-[var(--color-muted)] mb-2">
-      Salario/hora: <span class="font-mono font-semibold text-[var(--color-text)]" x-text="'B/. ' + (resultado?.salarioHora ?? 0).toFixed(4)"></span>
+  <div aria-live="polite">
+    <div x-show="resultado" x-transition class="result-box" style="display:none;">
+      <h3 class="result-title">Resumen de sobretiempos</h3>
+      <p class="text-sm text-[var(--color-muted)]">
+        Salario/hora: <span class="font-mono font-semibold text-[var(--color-text)]" x-text="resultado ? money(resultado.salarioHora, 4) : ''"></span>
+      </p>
+      <ul class="space-y-1 text-sm">
+        <template x-for="l in (resultado ? resultado.detalle : [])" x-bind:key="l.code">
+          <li class="flex justify-between gap-3">
+            <span class="text-[var(--color-muted)]" x-text="l.label + ' (' + l.horas + ' h × ' + l.factor + ')'"></span>
+            <span class="font-mono whitespace-nowrap" x-text="money(l.monto)"></span>
+          </li>
+        </template>
+      </ul>
+      <div class="result-total">
+        <span class="result-title">Total sobretiempos:</span>
+        <span class="result-total-amount" x-text="resultado ? money(resultado.total) : ''"></span>
+      </div>
+      <p class="disclaimer">
+        ⚠️ <strong>Referencia orientativa.</strong> Este cálculo tiene como objetivo brindar una referencia de cómo se obtienen los montos, pero el valor real siempre estará sujeto a la realidad particular de cada empleado, incluyendo su salario efectivo, categorías de horas aplicadas y los períodos reportados en PayDay.
+      </p>
     </div>
-    <div class="space-y-1 text-sm">
-      <template x-if="resultado?.detalle?.SDiu?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Diurno DiaNor (<span x-text="resultado.detalle.SDiu.hrs"></span>h × ×1.25):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SDiu.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SMix?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Mixto DiaNor (<span x-text="resultado.detalle.SMix.hrs"></span>h × ×1.50):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SMix.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SNoc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Nocturno DiaNor (<span x-text="resultado.detalle.SNoc.hrs"></span>h × ×1.75):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SNoc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SDiuRc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Diurno DiaNor Rec (<span x-text="resultado.detalle.SDiuRc.hrs"></span>h × ×2.1875):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SDiuRc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SMixRc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Mixto DiaNor Rec (<span x-text="resultado.detalle.SMixRc.hrs"></span>h × ×2.625):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SMixRc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SNocRc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Nocturno DiaNor Rec (<span x-text="resultado.detalle.SNocRc.hrs"></span>h × ×3.0625):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SNocRc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SDiuDom?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Diurno DiaDes (<span x-text="resultado.detalle.SDiuDom.hrs"></span>h × ×1.875):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SDiuDom.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SMixDom?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Mixto DiaDes (<span x-text="resultado.detalle.SMixDom.hrs"></span>h × ×2.25):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SMixDom.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SNocDom?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Nocturno DiaDes (<span x-text="resultado.detalle.SNocDom.hrs"></span>h × ×2.625):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SNocDom.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SDiuDomRc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Diurno DiaDes Rec (<span x-text="resultado.detalle.SDiuDomRc.hrs"></span>h × ×3.28125):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SDiuDomRc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SMixDomRc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Mixto DiaDes Rec (<span x-text="resultado.detalle.SMixDomRc.hrs"></span>h × ×3.9375):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SMixDomRc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.SNocDomRc?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Nocturno DiaDes Rec (<span x-text="resultado.detalle.SNocDomRc.hrs"></span>h × ×4.59375):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.SNocDomRc.monto.toFixed(2)"></span></div>
-      </template>
-      <template x-if="resultado?.detalle?.Feriado?.hrs > 0">
-        <div class="flex justify-between"><span class="text-[var(--color-muted)]">ST Feriado Nacional (<span x-text="resultado.detalle.Feriado.hrs"></span>h × ×2.50):</span><span class="font-mono" x-text="'B/. ' + resultado.detalle.Feriado.monto.toFixed(2)"></span></div>
-      </template>
-    </div>
-    <div class="border-t border-green-200 pt-3 flex justify-between items-center">
-      <span class="font-semibold text-green-800">Total sobretiempos:</span>
-      <span class="font-mono text-2xl font-bold text-green-700" x-text="'B/. ' + (resultado?.total ?? 0).toFixed(2)"></span>
-    </div>
-    <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mt-2 leading-relaxed">
-      ⚠️ <strong>Referencia orientativa.</strong> Este cálculo tiene como objetivo brindar una referencia de cómo se obtienen los montos, pero el valor real siempre estará sujeto a la realidad particular de cada empleado, incluyendo su salario efectivo, categorías de horas aplicadas y los períodos reportados en PayDay.
-    </p>
   </div>
 </div>
