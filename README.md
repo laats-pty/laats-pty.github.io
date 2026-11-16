@@ -87,6 +87,7 @@ Las calculadoras están basadas en la legislación laboral vigente de Panamá:
 | `npm run dev` | Servidor de desarrollo en localhost:4321 |
 | `npm run build` | Build de producción (output en ./dist/) |
 | `npm run preview` | Preview del build de producción |
+| `npm test` | Pruebas de las calculadoras |
 
 ---
 

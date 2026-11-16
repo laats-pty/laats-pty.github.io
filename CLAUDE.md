@@ -9,6 +9,7 @@ Sitio estático de recursos humanos para LAATS Panamá. Construido con Astro 6 +
 - `npm run dev` — Servidor de desarrollo en localhost:4321
 - `npm run build` — Build de producción (output en ./dist/)
 - `npm run preview` — Preview del build de producción
+- `npm test` — Pruebas de las calculadoras (`tests/calculations.test.ts`, runner nativo de Node)
 
 ## Tech Stack
 
@@ -20,15 +21,19 @@ Astro 6 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.14.9 (CD
 - `src/components/layout/` — Header, Footer, BaseLayout
 - `src/components/sections/` — Hero, QuickLinks, Calculators, FAQ
 - `src/components/calculators/` — Las 4 calculadoras individuales con Alpine.js
-- `src/lib/` — calculations.ts (lógica pura de cálculo), types.ts
+- `src/lib/` — calculations.ts (lógica pura de cálculo + datos de factores), types.ts
+- `src/scripts/calculators.ts` — Componentes Alpine (`Alpine.data`) que llaman a calculations.ts
+- `src/styles/globals.css` — Tokens de color y clases compartidas (`.field`, `.btn-primary`, `.toggle`, `.result-box`, `.disclaimer`, `.eyebrow`, `.card-link`)
+- `tests/` — Casos de prueba de las calculadoras
 - `src/pages/index.astro` — Página única que ensambla todas las secciones
 - `content/content.json` — Fuente de verdad del contenido: links y FAQs
-- `public/` — Assets estáticos (logo: logo-laats.jpg, favicon)
+- `public/` — Assets estáticos (logo: logo-laats.jpg; favicon.ico = ícono oficial de laats.net)
 - `.github/workflows/deploy.yml` — Pipeline de deploy a GitHub Pages
 - `.github/dependabot.yml` — Actualizaciones automáticas de dependencias
 
 ### Data Flow
 content.json → importado en build time → props de componentes Astro → HTML estático
+calculations.ts → importado por los .astro (tablas, en build) y por scripts/calculators.ts (cálculo, en el navegador)
 Alpine.js → estado local de cada calculadora → sin llamadas a red
 
 ### Key Patterns
@@ -37,7 +42,10 @@ Alpine.js → estado local de cada calculadora → sin llamadas a red
 - Alpine.js se carga via CDN con SRI (integrity hash) — no instalar el paquete npm
 - Cada sección tiene ID de anchor para smooth scroll desde el nav
 - Todas las URLs en QuickLinks pasan por `safeUrl()` que valida protocolo https:/http:
-- Los IDs del FAQ pasan por `safeId()` antes de usarse en expresiones Alpine
+- El FAQ usa `<details name="faq">` nativo: funciona sin Alpine y no interpola contenido en expresiones
+- El script de componentes va ANTES del `<script>` de Alpine en BaseLayout (se registra en `alpine:init`)
+- No usar manejadores en línea (`onclick=`, `onmouseover=`): la CSP los bloquea. Hover/foco se hacen con CSS
+- `astro.config.mjs` fija `assetsInlineLimit: 0` para que ningún script salga en línea (la CSP no admite `'unsafe-inline'` en scripts)
 
 ## Security
 
@@ -50,9 +58,11 @@ font-src 'self' https://fonts.gstatic.com;
 img-src 'self' data:;
 connect-src 'none';
 base-uri 'self';
-form-action 'https:' https://forms.microsoft.com https://docs.google.com;
+form-action 'none';
 ```
-- `'unsafe-eval'` es requerido e inevitable: Alpine.js v3 usa `new Function()` internamente.
+- `'unsafe-eval'` lo exige el build estándar de Alpine.js v3 (`new Function()`).
+- `form-action 'none'`: la página no tiene formularios propios; los trámites son enlaces.
+- `Referrer-Policy` va como `<meta name="referrer">`. `Permissions-Policy` no se puede fijar por meta ni en GitHub Pages.
 
 ### Alpine.js CDN con SRI
 ```html
@@ -62,23 +72,15 @@ form-action 'https:' https://forms.microsoft.com https://docs.google.com;
 ```
 
 ### GitHub Actions — SHAs fijos (no usar tags mutables)
-```yaml
-actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5          # v4
-actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020         # v4.4.0
-actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3.0.1
-actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e       # v4
-```
-
-### Pendiente — Node.js deprecation (no urgente)
-GitHub Actions deprecará Node.js 20 el **2 de junio 2026** y lo eliminará el 16 de septiembre 2026.
-Dependabot ya tiene PRs abiertos para actualizar las Actions a versiones compatibles con Node.js 24.
-Mergear esos PRs antes de mayo 2026.
+Los SHA vigentes están en `.github/workflows/deploy.yml` (los actualiza Dependabot). El comentario
+junto a cada SHA debe decir la versión real. El workflow corre `npm test` y `npm run build`; en
+pull requests solo compila y prueba, y solo despliega en push a `main`.
 
 ## Code Organization Rules
 
 1. **Contenido en content.json.** Nunca hardcodear texto de links o FAQs en componentes.
 2. **Lógica de cálculo en calculations.ts.** Los componentes Astro no hacen matemática — solo llaman funciones.
-3. **Un componente por archivo.** Máximo 150 líneas por archivo .astro.
+3. **Un componente por archivo.** Máximo 150 líneas por archivo .astro. Lo repetitivo (filas, campos) se genera desde datos, no se copia.
 4. **Alpine.js solo para interactividad.** No usar para renderizar contenido estático.
 5. **Mobile-first.** Todas las clases responsive empiezan en mobile, se sobrescriben con md: y xl:.
 
@@ -88,22 +90,24 @@ Mergear esos PRs antes de mayo 2026.
 - Primary: #1B3A6B (azul marino — header, botones, iconos)
 - Primary Dark: #122750 (hover de primary)
 - Accent: #F59E0B (ámbar — badges, bordes activos)
-- Background: #F1F5F9 (fondo de página)
+- Accent text: #9A4A06 (ámbar oscuro para TEXTO sobre fondo claro; el acento puro da 1.9:1)
+- Background: #EEF2F7 (fondo de página)
 - Surface: #FFFFFF (cards, calculadoras)
 - Text: #1E293B (texto principal)
-- Muted: #64748B (texto secundario)
+- Muted: #56657A (texto secundario; 5.3:1 sobre el fondo)
 - Success: #059669 (resultado de calculadoras)
-- Border: #E2E8F0 (bordes de cards)
+- Border: #DDE3EC (bordes de cards) · Field border: #8492A6 (bordes de campos, 3:1)
 
 ### Typography
-- Fuente: Inter (headings + body), JetBrains Mono (montos calculados)
-- Cargar ambas desde Google Fonts en BaseLayout.astro
+- Fuente: Outfit (headings + body), JetBrains Mono (montos calculados)
+- Se cargan desde Google Fonts con `<link>` + preconnect en BaseLayout.astro y se declaran en `@theme` (globals.css)
 
 ### Style
 - Border radius cards: rounded-xl (12px)
 - Border radius botones: rounded-lg (8px)
 - Sombra: shadow-sm en reposo, shadow-md en hover
-- Transiciones: transition-all duration-200
+- Transiciones: 200 ms; se anulan con `prefers-reduced-motion`
+- Foco: `:focus-visible` global (azul sobre claro, ámbar dentro de `.on-dark`)
 - Aesthetic: limpio, profesional, corporativo — sin gradientes agresivos
 
 ### Íconos disponibles (QuickLinks)
@@ -118,7 +122,7 @@ Mergear esos PRs antes de mayo 2026.
 
 ## Calculadoras — Reglas de negocio
 
-### Sobretiempos (OvertimeCalc.astro)
+### Sobretiempos (OvertimeCalc.astro; datos en `OVERTIME_GROUPS` de calculations.ts)
 Estructura de 13 categorías según PayDay (Planilla Computarizada de LAATS):
 
 | Categoría | Factor |
@@ -178,6 +182,6 @@ Todas muestran un aviso ámbar en el resultado:
 1. Los factores de sobretiempo deben verificarse contra la estructura real de PayDay (Planilla Computarizada) antes de cualquier cambio.
 2. El color primary y accent DEBEN ser extraídos de laats.net con DevTools — no usar valores aproximados sin verificar.
 3. Todos los links en content.json deben tener URLs reales — nunca dejar placeholders.
-4. El sitio debe verse correctamente en viewport de 375px (iPhone SE) antes del deploy.
+4. El sitio debe verse correctamente en viewport de 360–375px antes del deploy.
 5. Nunca instalar Alpine.js como paquete npm — siempre via CDN con SRI para mantener el build simple y seguro.
 6. Nunca usar tags mutables en GitHub Actions — siempre SHA completo.
