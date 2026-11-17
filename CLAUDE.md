@@ -13,7 +13,7 @@ Sitio estático de recursos humanos para LAATS Panamá. Construido con Astro 7 +
 
 ## Tech Stack
 
-Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.14.9 (CDN) + GitHub Pages
+Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.17.5, build CSP (CDN) + GitHub Pages
 
 ## Architecture
 
@@ -22,7 +22,7 @@ Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.14.9 (CD
 - `src/components/sections/` — Hero, QuickLinks, Calculators, FAQ
 - `src/components/calculators/` — Las 4 calculadoras individuales con Alpine.js
 - `src/lib/` — calculations.ts (lógica pura de cálculo + datos de factores), types.ts
-- `src/scripts/calculators.ts` — Componentes Alpine (`Alpine.data`) que llaman a calculations.ts
+- `src/scripts/calculators.ts` — Componentes Alpine (`Alpine.data`): calculadoras (llaman a calculations.ts), pestañas, encabezado (`siteHeader`) y año del pie (`currentYear`)
 - `src/styles/globals.css` — Tokens de color y clases compartidas (`.field`, `.btn-primary`, `.toggle`, `.result-box`, `.disclaimer`, `.eyebrow`, `.card-link`)
 - `tests/` — Casos de prueba de las calculadoras
 - `src/pages/index.astro` — Página única que ensambla todas las secciones
@@ -52,7 +52,7 @@ Alpine.js → estado local de cada calculadora → sin llamadas a red
 ### Content Security Policy (meta tag en BaseLayout.astro)
 ```
 default-src 'none';
-script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net;
+script-src 'self' https://cdn.jsdelivr.net;
 style-src 'self' 'unsafe-inline';
 font-src 'self';
 img-src 'self' data:;
@@ -60,14 +60,14 @@ connect-src 'none';
 base-uri 'self';
 form-action 'none';
 ```
-- `'unsafe-eval'` lo exige el build estándar de Alpine.js v3 (`new Function()`).
+- Sin `'unsafe-eval'`: se usa el build CSP de Alpine (`@alpinejs/csp`). Sus expresiones no pueden leer globales (`window`), ni usar funciones flecha, plantillas, desestructuración o asignar a propiedades anidadas; esa lógica va en un componente `Alpine.data` de `src/scripts/calculators.ts`.
 - `form-action 'none'`: la página no tiene formularios propios; los trámites son enlaces.
 - `Referrer-Policy` va como `<meta name="referrer">`. `Permissions-Policy` no se puede fijar por meta ni en GitHub Pages.
 
 ### Alpine.js CDN con SRI
 ```html
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
-  integrity="sha384-9Ax3MmS9AClxJyd5/zafcXXjxmwFhZCdsT6HJoJjarvCaAkJlk5QDzjLJm+Wdx5F"
+<script src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.17.5/dist/cdn.min.js"
+  integrity="sha384-Q4UOujiwqAb/jTt3ki4pdkETk4I3rIFQX8h271PLI41okj/YIKY7IQQFMw73wkrX"
   crossorigin="anonymous" defer></script>
 ```
 

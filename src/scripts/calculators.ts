@@ -23,6 +23,28 @@ const SIN_SALARIO = 'Ingresa tu salario mensual para calcular.';
 document.addEventListener('alpine:init', () => {
   const Alpine = (window as any).Alpine;
 
+  // Encabezado: sombra al desplazar y menú móvil. Va como componente porque
+  // el build CSP de Alpine no deja leer window desde una expresión.
+  Alpine.data('siteHeader', () => ({
+    scrolled: false,
+    open: false,
+    get shadowClass() {
+      return this.scrolled || this.open ? 'shadow-md' : 'shadow-none';
+    },
+    onScroll() {
+      this.scrolled = window.scrollY > 20;
+    },
+    toggle() {
+      this.open = !this.open;
+    },
+    close() {
+      this.open = false;
+    },
+  }));
+
+  // El año del pie se calcula en el navegador; el del build queda de respaldo.
+  Alpine.data('currentYear', () => ({ year: new Date().getFullYear() }));
+
   // Pestañas accesibles (flechas, Inicio y Fin mueven el foco y la selección).
   Alpine.data('tabs', (first: string) => ({
     tab: first,

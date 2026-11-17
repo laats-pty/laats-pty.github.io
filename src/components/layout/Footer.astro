@@ -9,7 +9,7 @@ const { email } = Astro.props;
   <div class="max-w-6xl mx-auto px-4 md:px-8">
     <div class="py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center">
       <p class="text-white/70 text-sm">
-        © {new Date().getFullYear()} LAATS Panamá. Todos los derechos reservados.
+        © <span x-data="currentYear" x-text="year">{new Date().getFullYear()}</span> LAATS Panamá. Todos los derechos reservados.
       </p>
       <p class="text-white/70 text-sm">
         ¿Preguntas?{' '}

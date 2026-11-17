@@ -29,10 +29,11 @@ const ogImage = new URL('/og-portal.jpg', Astro.site).href;
     <meta name="theme-color" content="#275B88" />
     {/* form-action 'none': la página no tiene formularios propios; los
         trámites son enlaces a Google/Microsoft Forms, que no pasan por CSP.
-        'unsafe-eval' lo exige el build estándar de Alpine (new Function). */}
+        Sin 'unsafe-eval': se usa el build CSP de Alpine (@alpinejs/csp), que
+        interpreta las expresiones sin new Function. */}
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
+      content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
     />
     {/* Vista previa al compartir el enlace (WhatsApp, Teams). La imagen sale
         del diseño editable de Canva «Portal RRHH · Imagen para compartir». */}
@@ -56,8 +57,8 @@ const ogImage = new URL('/og-portal.jpg', Astro.site).href;
     </script>
     <script
       defer
-      src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
-      integrity="sha384-9Ax3MmS9AClxJyd5/zafcXXjxmwFhZCdsT6HJoJjarvCaAkJlk5QDzjLJm+Wdx5F"
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.17.5/dist/cdn.min.js"
+      integrity="sha384-Q4UOujiwqAb/jTt3ki4pdkETk4I3rIFQX8h271PLI41okj/YIKY7IQQFMw73wkrX"
       crossorigin="anonymous"
     ></script>
   </head>

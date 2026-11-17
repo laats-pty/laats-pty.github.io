@@ -12,10 +12,10 @@ const links = [
 ---
 
 <header
-  x-data="{ scrolled: false, open: false }"
-  x-on:scroll.window.passive="scrolled = window.scrollY > 20"
-  x-on:keydown.escape.window="open = false"
-  x-bind:class="scrolled || open ? 'shadow-md' : 'shadow-none'"
+  x-data="siteHeader"
+  x-on:scroll.window.passive="onScroll"
+  x-on:keydown.escape.window="close"
+  x-bind:class="shadowClass"
   class="on-dark fixed top-0 left-0 right-0 z-50 bg-[var(--color-primary)] transition-shadow duration-200"
 >
   <div class="max-w-6xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
@@ -32,7 +32,7 @@ const links = [
     </nav>
     <button
       type="button"
-      x-on:click="open = !open"
+      x-on:click="toggle"
       x-bind:aria-expanded="open.toString()"
       aria-expanded="false"
       aria-controls="menu-movil"
@@ -53,7 +53,7 @@ const links = [
     class="md:hidden border-t border-white/10 bg-[var(--color-primary)] px-4 py-2"
   >
     {links.map((l) => (
-      <a href={l.href} x-on:click="open = false" class="block px-2 py-3 text-white font-medium rounded-md">{l.label}</a>
+      <a href={l.href} x-on:click="close" class="block px-2 py-3 text-white font-medium rounded-md">{l.label}</a>
     ))}
   </nav>
 </header>
