@@ -11,6 +11,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og-portal.jpg', Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -33,14 +34,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
     />
-    {/* Vista previa al compartir el enlace (WhatsApp, Teams). Sin og:image:
-        no existe una imagen oficial todavía; ver propuestas de la auditoría. */}
+    {/* Vista previa al compartir el enlace (WhatsApp, Teams). La imagen sale
+        del diseño editable de Canva «Portal RRHH · Imagen para compartir». */}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="es_PA" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Portal RRHH LAATS Panamá" />
+    <meta name="twitter:card" content="summary_large_image" />
     {/* favicon.ico es el ícono oficial de laats.net (PNG de 150×150). */}
     <link rel="icon" href="/favicon.ico" type="image/png" />
     {/* Orden obligatorio: primero los componentes (se registran en
