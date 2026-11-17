@@ -1,16 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 :root {
-  --color-primary: #1B3A6B;
-  --color-primary-dark: #122750;
-  --color-accent: #F59E0B;
-  /* Ámbar para TEXTO sobre fondos claros: el acento puro da 1.9:1 y no se lee. */
-  --color-accent-text: #9A4A06;
+  /* Colores de marca tomados de laats.net (primario y secundario). */
+  --color-primary: #275B88;
+  --color-primary-dark: #1B4266;
+  --color-accent: #C59704;
+  /* Dorado para TEXTO sobre fondos claros: el dorado puro da 2.7:1 y no se lee. */
+  --color-accent-text: #7A5C00;
+  /* Dorado para texto y foco sobre el azul: el dorado puro da 2.7:1; este, 5.1:1. */
+  --color-accent-on-dark: #FFD45C;
   --color-bg: #EEF2F7;
   --color-surface: #FFFFFF;
   --color-text: #1E293B;
@@ -20,8 +23,8 @@
   --color-border: #DDE3EC;
   /* Borde de campos de formulario: 3:1 contra blanco (WCAG 1.4.11). */
   --color-field-border: #8492A6;
-  --shadow-card: 0 2px 8px rgba(27, 58, 107, 0.07), 0 1px 2px rgba(27, 58, 107, 0.05);
-  --shadow-card-hover: 0 10px 28px rgba(27, 58, 107, 0.14), 0 4px 8px rgba(27, 58, 107, 0.08);
+  --shadow-card: 0 2px 8px rgba(39, 91, 136, 0.08), 0 1px 2px rgba(39, 91, 136, 0.05);
+  --shadow-card-hover: 0 10px 28px rgba(39, 91, 136, 0.16), 0 4px 8px rgba(39, 91, 136, 0.08);
   --header-h: 4rem;
 }
 
@@ -56,7 +59,7 @@ p {
 }
 .on-dark :focus-visible,
 .on-dark:focus-visible {
-  outline-color: var(--color-accent);
+  outline-color: var(--color-accent-on-dark);
 }
 
 /* ---------- Saltar al contenido ---------- */
@@ -81,7 +84,7 @@ p {
   color: var(--color-accent-text);
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
@@ -271,18 +274,6 @@ p {
 .faq-item[open] .faq-chevron {
   transform: rotate(180deg);
   color: var(--color-primary);
-}
-
-/* ---------- Textura del hero ---------- */
-.grain-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px;
-  mix-blend-mode: overlay;
-  opacity: 0.6;
 }
 
 /* ---------- Movimiento reducido ---------- */

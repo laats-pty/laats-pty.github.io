@@ -1,4 +1,7 @@
 ---
+// Fuentes alojadas en el propio sitio (sin orígenes externos en la CSP).
+import '@fontsource-variable/montserrat';
+import '@fontsource-variable/jetbrains-mono';
 import '../../styles/globals.css';
 
 interface Props {
@@ -22,13 +25,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         que Google llegue a leer este noindex y deje de indexar el sitio. */}
     <meta name="robots" content="noindex, nofollow" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta name="theme-color" content="#1B3A6B" />
+    <meta name="theme-color" content="#275B88" />
     {/* form-action 'none': la página no tiene formularios propios; los
         trámites son enlaces a Google/Microsoft Forms, que no pasan por CSP.
         'unsafe-eval' lo exige el build estándar de Alpine (new Function). */}
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
+      content="default-src 'none'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
     />
     {/* Vista previa al compartir el enlace (WhatsApp, Teams). Sin og:image:
         no existe una imagen oficial todavía; ver propuestas de la auditoría. */}
@@ -40,12 +43,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="twitter:card" content="summary" />
     {/* favicon.ico es el ícono oficial de laats.net (PNG de 150×150). */}
     <link rel="icon" href="/favicon.ico" type="image/png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@600&display=swap"
-    />
     {/* Orden obligatorio: primero los componentes (se registran en
         alpine:init) y después Alpine. Ambos son diferidos y se ejecutan en
         el orden del documento. */}
