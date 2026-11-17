@@ -28,6 +28,8 @@ import { OVERTIME_DIVISORS, OVERTIME_GROUPS, formatFactor } from '../../lib/calc
     </p>
   </div>
 
+  <p class="text-sm text-[var(--color-muted)] !-mb-3">Abre solo los grupos en los que tengas horas que ingresar.</p>
+
   <table class="w-full text-sm border-collapse">
     <caption class="sr-only">Horas de sobretiempo por tipo</caption>
     <thead>
@@ -38,13 +40,19 @@ import { OVERTIME_DIVISORS, OVERTIME_GROUPS, formatFactor } from '../../lib/calc
         <th scope="col" class="px-2 sm:px-3 py-2 font-semibold border-b border-[var(--color-border)] text-right w-24 sm:w-28">Monto</th>
       </tr>
     </thead>
-    {OVERTIME_GROUPS.map((group) => (
+    {OVERTIME_GROUPS.map((group, i) => (
       <tbody>
         <tr>
-          <th scope="colgroup" colspan="4" class="px-2 sm:px-3 py-1.5 text-left text-xs font-bold text-[var(--color-primary)] bg-blue-50 uppercase tracking-wide">{group.title}</th>
+          <th scope="colgroup" colspan="4" class="p-0 border-b border-[var(--color-border)]">
+            <button type="button" class="group-toggle" aria-expanded="false" x-bind:aria-expanded={`estaAbierto(${i}).toString()`} x-on:click={`alternarGrupo(${i})`}>
+              <span class="flex-1">{group.title}</span>
+              <span class="group-summary" x-text={`resumenGrupo(${i})`}></span>
+              <svg class="group-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+          </th>
         </tr>
         {group.categories.map((c) => (
-          <tr class="hover:bg-[var(--color-bg)] border-b border-[var(--color-border)]/60">
+          <tr x-show={`estaAbierto(${i})`} style="display:none;" class="hover:bg-[var(--color-bg)] border-b border-[var(--color-border)]/60">
             <th scope="row" class="px-2 sm:px-3 py-2 text-left font-normal">
               {c.label}
               <span class="sm:hidden block font-mono text-xs text-[var(--color-muted)]">{formatFactor(c.factor)}</span>

@@ -5,6 +5,7 @@
 import {
   OVERTIME_CATEGORIES,
   OVERTIME_DIVISORS,
+  OVERTIME_GROUPS,
   THIRTEENTH_INSTALLMENTS,
   calcLiquidation,
   calcOvertime,
@@ -58,6 +59,23 @@ document.addEventListener('alpine:init', () => {
         horas: { [code]: this.horas[code] },
       }).detalle[0];
       return formatMoney(linea.monto);
+    },
+    // Grupos de la tabla: cerrados al entrar; cada quien abre el que usa.
+    abiertos: {} as Record<number, boolean>,
+    estaAbierto(i: number) {
+      return this.abiertos[i] === true;
+    },
+    alternarGrupo(i: number) {
+      this.abiertos[i] = !this.abiertos[i];
+    },
+    // Lo ingresado en un grupo se sigue viendo con el grupo cerrado.
+    resumenGrupo(i: number) {
+      const horas = Object.fromEntries(OVERTIME_GROUPS[i].categories.map((c) => [c.code, this.horas[c.code]]));
+      const total = Object.values(horas).reduce((sum: number, h) => sum + toAmount(h), 0);
+      if (total <= 0) return '';
+      const salarioMensual = toAmount(this.salario);
+      if (salarioMensual <= 0) return `${total} h`;
+      return `${total} h · ${formatMoney(calcOvertime({ salarioMensual, tipo: this.tipo as EmployeeType, horas }).total)}`;
     },
     setTipo(tipo: EmployeeType) {
       this.tipo = tipo;

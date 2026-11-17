@@ -141,6 +141,8 @@ Estructura de 13 categorías según PayDay (Planilla Computarizada de LAATS):
 | ST Nocturno DiaDes Rec | ×4.59375 |
 | ST Feriado Nacional | ×2.50 |
 
+**Grupos desplegables:** los 5 grupos de la tabla entran cerrados; cada encabezado es un botón (`aria-expanded`) y, cerrado, muestra las horas y el monto ya ingresados en ese grupo.
+
 **Tipos de empleado (afectan el divisor del salario hora):**
 - **Fijo** (Rotación 6×2): salario mensual ÷ **182.5** horas
 - **Temporal** (Rotación 6×1): salario mensual ÷ **208** horas

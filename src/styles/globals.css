@@ -156,6 +156,45 @@ p {
   border-color: var(--color-primary);
   color: #fff;
 }
+/* Grupos desplegables de la tabla de sobretiempos */
+.group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: #eff6ff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.group-toggle:hover {
+  background: #dbeafe;
+}
+.group-toggle:focus-visible {
+  outline-offset: -2px;
+}
+.group-summary {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+.group-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.group-toggle[aria-expanded='true'] .group-chevron {
+  transform: rotate(180deg);
+}
 .note-legal {
   font-size: 0.75rem;
   line-height: 1.5;
