@@ -15,7 +15,9 @@ import {
   formatMoney,
   hourlyRate,
   toAmount,
+  type ContractType,
   type EmployeeType,
+  type ExitReason,
 } from '../lib/calculations';
 
 const SIN_SALARIO = 'Ingresa tu salario mensual para calcular.';
@@ -175,9 +177,28 @@ document.addEventListener('alpine:init', () => {
     mesesAdicionales: '',
     diasVacaciones: '',
     mesesDecimo: '',
+    contrato: 'indefinido' as ContractType,
+    motivo: 'sin-indemnizacion' as ExitReason,
     resultado: null as ReturnType<typeof calcLiquidation> | null,
     error: '',
     money: formatMoney,
+    get esIndefinido() {
+      return this.contrato === 'indefinido';
+    },
+    get esInjustificado() {
+      return this.motivo === 'injustificado';
+    },
+    get muestraIndemnizacion() {
+      return this.contrato === 'indefinido' && this.motivo === 'injustificado';
+    },
+    setContrato(contrato: ContractType) {
+      this.contrato = contrato;
+      this.invalidar();
+    },
+    setMotivo(motivo: ExitReason) {
+      this.motivo = motivo;
+      this.invalidar();
+    },
     invalidar() {
       this.resultado = null;
       this.error = '';
@@ -192,6 +213,8 @@ document.addEventListener('alpine:init', () => {
         mesesAdicionales: toAmount(this.mesesAdicionales),
         diasVacacionesPendientes: toAmount(this.diasVacaciones),
         mesesDecimoPeriodoActual: toAmount(this.mesesDecimo),
+        contrato: this.contrato as ContractType,
+        motivo: this.motivo as ExitReason,
       });
     },
   }));

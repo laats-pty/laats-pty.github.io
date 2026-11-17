@@ -1,21 +1,37 @@
 ---
+import { INDEMNITY_WEEKS_AFTER_10_YEARS, INDEMNITY_WEEKS_FIRST_10_YEARS } from '../../lib/calculations';
+
 const campos = [
   { id: 'liq-anios', model: 'anios', label: 'Años trabajados' },
   { id: 'liq-meses', model: 'mesesAdicionales', label: 'Meses adicionales (sobre años completos)', max: 11 },
   { id: 'liq-vacaciones', model: 'diasVacaciones', label: 'Días de vacaciones pendientes' },
-  { id: 'liq-decimo', model: 'mesesDecimo', label: 'Meses de décimo sin cobrar (año actual)', max: 11 },
-];
-const lineas = [
-  { label: 'Prima de antigüedad:', campo: 'primaAntiguedad' },
-  { label: 'Vacaciones proporcionales:', campo: 'vacacionesProporcionales' },
-  { label: 'Décimo proporcional:', campo: 'decimoProporcional' },
+  { id: 'liq-decimo', model: 'mesesDecimo', label: 'Meses de décimo sin cobrar (período actual)', max: 4 },
 ];
 ---
 
 <div x-data="liquidationCalc" x-on:input="invalidar()" class="space-y-6">
   <p class="note-legal">
-    Ley 44 de 1995 + Código de Trabajo — Prima de antigüedad + Vacaciones + Décimo + Preaviso
+    Código de Trabajo, arts. 224 y 225 (Ley 44 de 1995) — Prima de antigüedad, indemnización, vacaciones y décimo tercer mes.
   </p>
+
+  <div role="group" aria-labelledby="liq-contrato-label">
+    <p id="liq-contrato-label" class="field-label !mb-2">Tipo de contrato</p>
+    <div class="flex gap-2">
+      <button type="button" class="toggle" aria-pressed="true" x-bind:aria-pressed="esIndefinido.toString()" x-on:click="setContrato('indefinido')">Tiempo indefinido</button>
+      <button type="button" class="toggle" aria-pressed="false" x-bind:aria-pressed="(!esIndefinido).toString()" x-on:click="setContrato('definido')">Tiempo definido</button>
+    </div>
+    <p class="text-xs text-[var(--color-muted)] mt-2" x-show="!esIndefinido" style="display:none;">
+      En contratos por tiempo definido la ley no prevé prima de antigüedad ni la indemnización del art. 225. Si tienes dudas sobre tu tipo de contrato, consulta con RRHH.
+    </p>
+  </div>
+
+  <div role="group" aria-labelledby="liq-motivo-label">
+    <p id="liq-motivo-label" class="field-label !mb-2">Motivo de salida</p>
+    <div class="flex flex-col sm:flex-row gap-2">
+      <button type="button" class="toggle" aria-pressed="true" x-bind:aria-pressed="(!esInjustificado).toString()" x-on:click="setMotivo('sin-indemnizacion')">Renuncia, mutuo acuerdo o despido justificado</button>
+      <button type="button" class="toggle" aria-pressed="false" x-bind:aria-pressed="esInjustificado.toString()" x-on:click="setMotivo('injustificado')">Despido injustificado</button>
+    </div>
+  </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div class="sm:col-span-2">
@@ -39,21 +55,30 @@ const lineas = [
     <div x-show="resultado" x-transition class="result-box" style="display:none;">
       <h3 class="result-title">Desglose de liquidación</h3>
       <ul class="space-y-2 text-sm">
-        {lineas.map((l) => (
-          <li class="flex justify-between gap-3">
-            <span class="text-[var(--color-muted)]">{l.label}</span>
-            <span class="font-mono font-semibold whitespace-nowrap" x-text={`resultado ? money(resultado.${l.campo}) : ''`}></span>
-          </li>
-        ))}
+        <li class="flex justify-between gap-3" x-show="esIndefinido">
+          <span class="text-[var(--color-muted)]">Prima de antigüedad (1 semana por año, proporcional):</span>
+          <span class="font-mono font-semibold whitespace-nowrap" x-text="resultado ? money(resultado.primaAntiguedad) : ''"></span>
+        </li>
+        <li class="flex justify-between gap-3" x-show="muestraIndemnizacion" style="display:none;">
+          <span class="text-[var(--color-muted)]">Indemnización ({INDEMNITY_WEEKS_FIRST_10_YEARS} semanas por año hasta 10 años; {INDEMNITY_WEEKS_AFTER_10_YEARS} después):</span>
+          <span class="font-mono font-semibold whitespace-nowrap" x-text="resultado ? money(resultado.indemnizacion) : ''"></span>
+        </li>
         <li class="flex justify-between gap-3">
-          <span class="text-[var(--color-muted)]">Preaviso (<span x-text="resultado ? resultado.semanasPreaviso : ''"></span> sem.):</span>
-          <span class="font-mono font-semibold whitespace-nowrap" x-text="resultado ? money(resultado.montoPreaviso) : ''"></span>
+          <span class="text-[var(--color-muted)]">Vacaciones proporcionales:</span>
+          <span class="font-mono font-semibold whitespace-nowrap" x-text="resultado ? money(resultado.vacacionesProporcionales) : ''"></span>
+        </li>
+        <li class="flex justify-between gap-3">
+          <span class="text-[var(--color-muted)]">Décimo proporcional:</span>
+          <span class="font-mono font-semibold whitespace-nowrap" x-text="resultado ? money(resultado.decimoProporcional) : ''"></span>
         </li>
       </ul>
       <div class="result-total">
         <span class="result-title">Total estimado:</span>
         <span class="result-total-amount" x-text="resultado ? money(resultado.total) : ''"></span>
       </div>
+      <p class="text-xs text-[var(--color-muted)] leading-relaxed">
+        No incluye salarios pendientes, deducciones (Seguro Social, impuesto sobre la renta), preaviso ni recargos por proceso judicial. La ley calcula la prima y la indemnización sobre promedios de salario (últimos 5 años y últimos 6 meses), por lo que con sobretiempos el monto cambia.
+      </p>
       <p class="disclaimer">
         ⚠️ <strong>Esta es una estimación de referencia.</strong> El monto real de la liquidación siempre dependerá de los salarios efectivamente devengados por el empleado durante su relación laboral, incluyendo sobretiempos, recargos y otros ingresos variables. Para el cálculo oficial, consulta con el departamento de RRHH.
       </p>

@@ -163,39 +163,52 @@ export function calcThirteenthFijo(salarioMensual: number): { totalPeriodo: numb
 }
 
 // ============================================================
-// LIQUIDACIÓN — Ley 44 de 1995 + Código de Trabajo
-// Prima de antigüedad: 1 semana de salario por año completo trabajado.
-// Preaviso: <2 años = 1 sem | 2–5 = 2 sem | 5–10 = 4 sem | >10 = 6 sem
+// LIQUIDACIÓN — Código de Trabajo (texto de la Ley 44 de 1995)
+// Prima de antigüedad (arts. 224 y 226): 1 semana de salario por año,
+//   proporcional por fracción de año. Solo contrato por tiempo indefinido,
+//   cualquiera que sea la causa de terminación.
+// Indemnización por despido injustificado (art. 225-C, relaciones iniciadas
+//   con la Ley 44): 3.4 semanas por año en los primeros 10 años y 1 semana
+//   por año desde el 11, proporcional. Solo contrato indefinido.
+// La ley no prevé una escala de preaviso por antigüedad a favor del
+//   trabajador; por eso no se calcula.
+// Fuentes y pendientes: Contexto-IA, propuesta-liquidacion-2026-11-17.md
 // ============================================================
+export type ContractType = 'indefinido' | 'definido';
+export type ExitReason = 'sin-indemnizacion' | 'injustificado';
+
+export const INDEMNITY_WEEKS_FIRST_10_YEARS = 3.4;
+export const INDEMNITY_WEEKS_AFTER_10_YEARS = 1;
+
 export function calcLiquidation(params: {
   salarioMensual: number;
   aniosTrabajados: number;
   mesesAdicionales: number;
   diasVacacionesPendientes: number;
   mesesDecimoPeriodoActual: number;
+  contrato?: ContractType;
+  motivo?: ExitReason;
 }): {
   primaAntiguedad: number;
+  indemnizacion: number;
   vacacionesProporcionales: number;
   decimoProporcional: number;
-  montoPreaviso: number;
-  semanasPreaviso: number;
   total: number;
 } {
   const salario = toAmount(params.salarioMensual);
   const salarioSemanal = (salario * 12) / 52;
   const totalAnios = toAmount(params.aniosTrabajados) + toAmount(params.mesesAdicionales) / 12;
+  const indefinido = (params.contrato ?? 'indefinido') === 'indefinido';
+  const injustificado = (params.motivo ?? 'sin-indemnizacion') === 'injustificado';
 
-  const primaAntiguedad = round2(salarioSemanal * Math.floor(totalAnios));
+  const primaAntiguedad = indefinido ? round2(salarioSemanal * totalAnios) : 0;
+  const semanasIndemnizacion =
+    INDEMNITY_WEEKS_FIRST_10_YEARS * Math.min(totalAnios, 10) +
+    INDEMNITY_WEEKS_AFTER_10_YEARS * Math.max(totalAnios - 10, 0);
+  const indemnizacion = indefinido && injustificado ? round2(salarioSemanal * semanasIndemnizacion) : 0;
   const vacacionesProporcionales = round2((salario / 30) * toAmount(params.diasVacacionesPendientes));
   const decimoProporcional = round2((salario * toAmount(params.mesesDecimoPeriodoActual)) / 12);
+  const total = round2(primaAntiguedad + indemnizacion + vacacionesProporcionales + decimoProporcional);
 
-  let semanasPreaviso = 1;
-  if (totalAnios >= 10) semanasPreaviso = 6;
-  else if (totalAnios >= 5) semanasPreaviso = 4;
-  else if (totalAnios >= 2) semanasPreaviso = 2;
-
-  const montoPreaviso = round2(salarioSemanal * semanasPreaviso);
-  const total = round2(primaAntiguedad + vacacionesProporcionales + decimoProporcional + montoPreaviso);
-
-  return { primaAntiguedad, vacacionesProporcionales, decimoProporcional, montoPreaviso, semanasPreaviso, total };
+  return { primaAntiguedad, indemnizacion, vacacionesProporcionales, decimoProporcional, total };
 }

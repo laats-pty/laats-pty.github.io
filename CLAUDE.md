@@ -168,8 +168,15 @@ Los factores "Con Recargo" ya incluyen el multiplicador ×1.75 sobre el factor b
 - **Modo Con sobretiempos:** (mes1 + mes2 + mes3 + mes4) ÷ 12
 
 ### Liquidación (LiquidationCalc.astro)
-- Prima de antigüedad: 1 semana de salario por año trabajado
-- Preaviso: <2 años=1sem, 2-5=2sem, 5-10=4sem, >10=6sem
+Reglas contrastadas con el Código de Trabajo el 2026-11-17 (fuentes y pendientes en Contexto-IA, `propuesta-liquidacion-2026-11-17.md`):
+- Dos selectores: **tipo de contrato** (indefinido / definido) y **motivo de salida** (renuncia, mutuo acuerdo o despido justificado / despido injustificado)
+- Prima de antigüedad (arts. 224 y 226): 1 semana de salario por año, **proporcional por fracción de año**. Solo contrato indefinido, en cualquier motivo de salida
+- Indemnización (art. 225-C): 3.4 semanas por año en los primeros 10 años y 1 semana por año desde el 11, proporcional. Solo contrato indefinido con despido injustificado
+- Contrato por tiempo definido: sin prima ni indemnización; solo vacaciones y décimo
+- Vacaciones: (salario ÷ 30) × días pendientes. Décimo: salario × meses del período actual ÷ 12 (máx. 4)
+- Salario semanal = salario mensual × 12 ÷ 52
+- **No hay fila de preaviso**: la escala 1/2/4/6 semanas que tuvo la calculadora no existe en la ley. No volver a añadirla
+- No calcula salarios pendientes, deducciones, preaviso del art. 212 ni recargos por proceso; lo dice una nota bajo el total
 - Resultado mostrado como "Total estimado" (no cifra definitiva)
 
 ### Disclaimer en todas las calculadoras
@@ -181,7 +188,7 @@ Todas muestran un aviso dorado en el resultado:
 - **Sobretiempo** — Ley 44 de 1995, Art. 26: Diurno ×1.25, Mixto ×1.50, Nocturno ×1.75, Descanso ×1.50 adicional, Feriado ×2.50 total. Recargo ×1.75 desde la 3.ª hora diaria o 9.ª semanal.
 - **Vacaciones** — Código de Trabajo Art. 54: 30 días por 11 meses trabajados
 - **Décimo tercer mes** — Art. 43 CT: 3 cuotas de 4 meses; fórmula = total devengado en período ÷ 12
-- **Liquidación** — Prima de antigüedad: 1 semana/año. Preaviso: <2 años=1sem, 2-5=2sem, 5-10=4sem, >10=6sem
+- **Liquidación** — Prima de antigüedad (art. 224): 1 semana por año, proporcional, solo contrato indefinido. Indemnización por despido injustificado (art. 225): 3.4 semanas por año hasta 10 años, 1 semana por año después
 
 ## Reglas No Negociables
 

@@ -105,41 +105,50 @@ test('décimo: con ingresos variables = suma de 4 meses ÷ 12', () => {
   });
 });
 
-test('liquidación: 3 años 6 meses, B/. 1,300', () => {
-  const r = calcLiquidation({
-    salarioMensual: 1300,
-    aniosTrabajados: 3,
-    mesesAdicionales: 6,
-    diasVacacionesPendientes: 10,
-    mesesDecimoPeriodoActual: 2,
-  });
-  // salario semanal = 1300 × 12 / 52 = 300
-  assert.deepEqual(r, {
-    primaAntiguedad: 900, // 300 × 3 años completos
+const baseLiq = {
+  salarioMensual: 1300, // salario semanal = 1300 × 12 / 52 = 300
+  aniosTrabajados: 3,
+  mesesAdicionales: 6,
+  diasVacacionesPendientes: 10,
+  mesesDecimoPeriodoActual: 2,
+};
+
+test('liquidación: renuncia con contrato indefinido, prima proporcional', () => {
+  assert.deepEqual(calcLiquidation(baseLiq), {
+    primaAntiguedad: 1050, // 300 × 3.5 años (art. 224, proporcional)
+    indemnizacion: 0,
     vacacionesProporcionales: 433.33, // 1300/30 × 10
     decimoProporcional: 216.67, // 1300 × 2 / 12
-    montoPreaviso: 600, // 2 semanas (2–5 años)
-    semanasPreaviso: 2,
-    total: 2150,
+    total: 1700,
   });
 });
 
-test('liquidación: tramos de preaviso', () => {
-  const sem = (anios: number, meses = 0) =>
+test('liquidación: despido injustificado suma la indemnización del art. 225', () => {
+  const r = calcLiquidation({ ...baseLiq, motivo: 'injustificado' });
+  assert.equal(r.indemnizacion, 3570); // 3.4 × 3.5 × 300
+  assert.equal(r.total, 5270);
+});
+
+test('liquidación: indemnización, 3.4 semanas hasta 10 años y 1 semana después', () => {
+  const ind = (anios: number, meses = 0) =>
     calcLiquidation({
-      salarioMensual: 1000,
+      salarioMensual: 1300,
       aniosTrabajados: anios,
       mesesAdicionales: meses,
       diasVacacionesPendientes: 0,
       mesesDecimoPeriodoActual: 0,
-    }).semanasPreaviso;
-  assert.equal(sem(0, 6), 1);
-  assert.equal(sem(1, 11), 1);
-  assert.equal(sem(2), 2);
-  assert.equal(sem(4, 11), 2);
-  assert.equal(sem(5), 4);
-  assert.equal(sem(9, 11), 4);
-  assert.equal(sem(10), 6);
+      motivo: 'injustificado',
+    }).indemnizacion;
+  assert.equal(ind(0, 6), 510); // 3.4 × 0.5 × 300
+  assert.equal(ind(10), 10200); // 34 semanas
+  assert.equal(ind(12, 6), 10950); // 34 + 2.5 semanas
+});
+
+test('liquidación: contrato por tiempo definido no lleva prima ni indemnización', () => {
+  const r = calcLiquidation({ ...baseLiq, contrato: 'definido', motivo: 'injustificado' });
+  assert.equal(r.primaAntiguedad, 0);
+  assert.equal(r.indemnizacion, 0);
+  assert.equal(r.total, 650); // solo vacaciones y décimo
 });
 
 test('utilidades de formato y saneo', () => {
