@@ -118,8 +118,9 @@ Primario y acento son los de laats.net (extraídos del sitio el 2026-11-16).
 ## Quick Links — Reglas de negocio
 
 Cada link lleva `audience` en content.json y la sección se pinta en dos grupos (textos en `sections.accesos.groups`):
-- **Para todo el personal (`todos`):** Nuevo Ingreso, Cartas de Trabajo, Solicitud de Vacaciones
-- **Solo para personal temporal (`temporal`):** Solicitud de Sobretiempos, Justificaciones, Consultas de Planilla, Gastos Reembolsables
+- **Para todo el personal (`todos`):** Nuevo Ingreso, Cartas de Trabajo, Solicitud de Vacaciones, Consultas de Planilla
+  - Consultas de Planilla la usan ambos: el temporal registra ahí toda consulta; el fijo consulta por la plataforma de Copa y usa este formulario cuando necesita atención personalizada o presencial (RRHH decide si se atiende presencialmente)
+- **Solo para personal temporal (`temporal`):** Solicitud de Sobretiempos, Justificaciones, Gastos Reembolsables
   - El personal fijo tiene sus propios sistemas y procesos para estos trámites
 - Los formularios de Google piden iniciar sesión y no todo el personal tiene cuenta: la tarjeta muestra la nota `sections.accesos.googleNote` cuando la URL es de `docs.google.com` o `forms.gle`
 
