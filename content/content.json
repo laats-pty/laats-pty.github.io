@@ -66,7 +66,7 @@
     {
       "id": "planilla",
       "title": "Consultas de Planilla",
-      "description": "Consultas respondidas en máximo 2 días hábiles. Incluye tu código de empleado y el período de la consulta.",
+      "description": "Temporal: todas tus consultas aquí. Fijo: primero, plataforma de Copa; aquí solo para atención personalizada o presencial. RRHH decide si es presencial. Respondemos en máximo 2 días hábiles. Incluye código de empleado y período.",
       "icon": "user-question",
       "url": "https://forms.cloud.microsoft/r/Kr02FgPgaL",
       "category": "Nómina",
