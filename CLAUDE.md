@@ -1,6 +1,6 @@
 # Portal RRHH LAATS Panamá
 
-Sitio estático de recursos humanos para LAATS Panamá. Construido con Astro 6 + Tailwind CSS v4 + Alpine.js (CDN). Sin base de datos, sin backend, sin auth. Deploy automático a GitHub Pages via GitHub Actions.
+Sitio estático de recursos humanos para LAATS Panamá. Construido con Astro 7 + Tailwind CSS v4 + Alpine.js (CDN). Sin base de datos, sin backend, sin auth. Deploy automático a GitHub Pages via GitHub Actions.
 
 **URL de producción:** https://laats-pty.github.io
 
@@ -13,7 +13,7 @@ Sitio estático de recursos humanos para LAATS Panamá. Construido con Astro 6 +
 
 ## Tech Stack
 
-Astro 6 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.14.9 (CDN) + GitHub Pages
+Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.14.9 (CDN) + GitHub Pages
 
 ## Architecture
 
@@ -26,7 +26,7 @@ Astro 6 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.14.9 (CD
 - `src/styles/globals.css` — Tokens de color y clases compartidas (`.field`, `.btn-primary`, `.toggle`, `.result-box`, `.disclaimer`, `.eyebrow`, `.card-link`)
 - `tests/` — Casos de prueba de las calculadoras
 - `src/pages/index.astro` — Página única que ensambla todas las secciones
-- `content/content.json` — Fuente de verdad del contenido: links y FAQs
+- `content/content.json` — Fuente de verdad del contenido: lema, textos de cada sección (`sections`), links y FAQs
 - `public/` — Assets estáticos (logo: logo-laats.jpg; favicon.ico = ícono oficial de laats.net)
 - `.github/workflows/deploy.yml` — Pipeline de deploy a GitHub Pages
 - `.github/dependabot.yml` — Actualizaciones automáticas de dependencias
@@ -53,8 +53,8 @@ Alpine.js → estado local de cada calculadora → sin llamadas a red
 ```
 default-src 'none';
 script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net;
-style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-font-src 'self' https://fonts.gstatic.com;
+style-src 'self' 'unsafe-inline';
+font-src 'self';
 img-src 'self' data:;
 connect-src 'none';
 base-uri 'self';
@@ -78,7 +78,7 @@ pull requests solo compila y prueba, y solo despliega en push a `main`.
 
 ## Code Organization Rules
 
-1. **Contenido en content.json.** Nunca hardcodear texto de links o FAQs en componentes.
+1. **Contenido en content.json.** Nunca hardcodear texto de links, FAQs ni encabezados de sección en componentes. Los textos publicables los redacta Codex.
 2. **Lógica de cálculo en calculations.ts.** Los componentes Astro no hacen matemática — solo llaman funciones.
 3. **Un componente por archivo.** Máximo 150 líneas por archivo .astro. Lo repetitivo (filas, campos) se genera desde datos, no se copia.
 4. **Alpine.js solo para interactividad.** No usar para renderizar contenido estático.
@@ -87,38 +87,41 @@ pull requests solo compila y prueba, y solo despliega en push a `main`.
 ## Design System
 
 ### Colors
-- Primary: #1B3A6B (azul marino — header, botones, iconos)
-- Primary Dark: #122750 (hover de primary)
-- Accent: #F59E0B (ámbar — badges, bordes activos)
-- Accent text: #9A4A06 (ámbar oscuro para TEXTO sobre fondo claro; el acento puro da 1.9:1)
+Primario y acento son los de laats.net (extraídos del sitio el 2026-11-16).
+- Primary: #275B88 (azul LAATS — header, hero, botones, iconos)
+- Primary Dark: #1B4266 (hover de primary, pie)
+- Accent: #C59704 (dorado LAATS — botón principal del hero, badges). Solo como FONDO o adorno
+- Accent text: #7A5C00 (dorado oscuro para TEXTO sobre fondo claro; el dorado puro da 2.7:1)
+- Accent on dark: #FFD45C (dorado claro para texto y foco sobre el azul; 5.1:1)
 - Background: #EEF2F7 (fondo de página)
 - Surface: #FFFFFF (cards, calculadoras)
-- Text: #1E293B (texto principal)
+- Text: #1E293B (texto principal; también sobre el botón dorado, 5.4:1)
 - Muted: #56657A (texto secundario; 5.3:1 sobre el fondo)
 - Success: #059669 (resultado de calculadoras)
 - Border: #DDE3EC (bordes de cards) · Field border: #8492A6 (bordes de campos, 3:1)
 
 ### Typography
-- Fuente: Outfit (headings + body), JetBrains Mono (montos calculados)
-- Se cargan desde Google Fonts con `<link>` + preconnect en BaseLayout.astro y se declaran en `@theme` (globals.css)
+- Fuente: Montserrat (la de laats.net; headings + body), JetBrains Mono (montos calculados)
+- Alojadas en el propio sitio con `@fontsource-variable/*` (se importan en BaseLayout.astro y se declaran en `@theme`). No usar Google Fonts: la CSP no admite orígenes externos de fuentes ni estilos
 
 ### Style
 - Border radius cards: rounded-xl (12px)
 - Border radius botones: rounded-lg (8px)
 - Sombra: shadow-sm en reposo, shadow-md en hover
 - Transiciones: 200 ms; se anulan con `prefers-reduced-motion`
-- Foco: `:focus-visible` global (azul sobre claro, ámbar dentro de `.on-dark`)
-- Aesthetic: limpio, profesional, corporativo — sin gradientes agresivos
+- Foco: `:focus-visible` global (azul sobre claro, dorado claro dentro de `.on-dark`)
+- Aesthetic: limpio, profesional, corporativo — hero de color plano, sin texturas ni manchas difuminadas
 
 ### Íconos disponibles (QuickLinks)
 `user-plus`, `clock`, `file-text`, `dollar-sign`, `receipt`, `calendar`, `envelope`, `user-question`
 
 ## Quick Links — Reglas de negocio
 
-- **Aplican a todos:** Nuevo Ingreso, Cartas de Trabajo, Solicitud de Vacaciones
-- **Solo personal Temporal:** Solicitud de Sobretiempos, Justificaciones, Consultas de Planilla, Gastos Reembolsables
-  - Los títulos de estos incluyen `(Temporales)` para dejar clara la distinción
+Cada link lleva `audience` en content.json y la sección se pinta en dos grupos (textos en `sections.accesos.groups`):
+- **Para todo el personal (`todos`):** Nuevo Ingreso, Cartas de Trabajo, Solicitud de Vacaciones
+- **Solo para personal temporal (`temporal`):** Solicitud de Sobretiempos, Justificaciones, Consultas de Planilla, Gastos Reembolsables
   - El personal fijo tiene sus propios sistemas y procesos para estos trámites
+- Los formularios de Google piden iniciar sesión y no todo el personal tiene cuenta: la tarjeta muestra la nota `sections.accesos.googleNote` cuando la URL es de `docs.google.com` o `forms.gle`
 
 ## Calculadoras — Reglas de negocio
 
@@ -169,7 +172,7 @@ Los factores "Con Recargo" ya incluyen el multiplicador ×1.75 sobre el factor b
 - Resultado mostrado como "Total estimado" (no cifra definitiva)
 
 ### Disclaimer en todas las calculadoras
-Todas muestran un aviso ámbar en el resultado:
+Todas muestran un aviso dorado en el resultado:
 > ⚠️ **Referencia orientativa.** Este cálculo tiene como objetivo brindar una referencia de cómo se obtienen los montos, pero el valor real siempre estará sujeto a la realidad particular de cada empleado.
 
 ## Ley Laboral Panameña (referencia)
@@ -182,7 +185,7 @@ Todas muestran un aviso ámbar en el resultado:
 ## Reglas No Negociables
 
 1. Los factores de sobretiempo deben verificarse contra la estructura real de PayDay (Planilla Computarizada) antes de cualquier cambio.
-2. El color primary y accent DEBEN ser extraídos de laats.net con DevTools — no usar valores aproximados sin verificar.
+2. El color primary y accent son los de laats.net (#275B88 y #C59704). Si el sitio cambia, se vuelven a extraer con DevTools — no usar valores aproximados sin verificar.
 3. Todos los links en content.json deben tener URLs reales — nunca dejar placeholders.
 4. El sitio debe verse correctamente en viewport de 360–375px antes del deploy.
 5. Nunca instalar Alpine.js como paquete npm — siempre via CDN con SRI para mantener el build simple y seguro.
