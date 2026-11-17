@@ -1,18 +1,19 @@
 ---
-import type { FAQItem } from '../../lib/types';
+import type { FAQItem, SectionText } from '../../lib/types';
 
 interface Props {
   items: FAQItem[];
+  text: SectionText;
 }
-const { items } = Astro.props;
+const { items, text } = Astro.props;
 ---
 
 <section id="faq" class="py-16 px-4 md:px-8 bg-[var(--color-surface)]" aria-labelledby="faq-titulo">
   <div class="max-w-3xl mx-auto">
     <div class="mb-10">
-      <p class="eyebrow">Soporte</p>
-      <h2 id="faq-titulo" class="text-3xl font-bold text-[var(--color-text)] mb-2">Preguntas frecuentes</h2>
-      <p class="text-[var(--color-muted)] max-w-[48ch]">Respuestas a las dudas más comunes sobre tus derechos laborales.</p>
+      <p class="eyebrow">{text.eyebrow}</p>
+      <h2 id="faq-titulo" class="text-3xl font-bold text-[var(--color-text)] mb-2">{text.title}</h2>
+      <p class="text-[var(--color-muted)] max-w-[52ch]">{text.subtitle}</p>
     </div>
 
     <!-- <details> nativo: accesible por teclado y lector de pantalla, y se

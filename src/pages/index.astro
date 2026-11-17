@@ -7,15 +7,16 @@ import QuickLinks from '../components/sections/QuickLinks.astro';
 import Calculators from '../components/sections/Calculators.astro';
 import FAQ from '../components/sections/FAQ.astro';
 import content from '../../content/content.json';
+import type { AccessSection, QuickLink } from '../lib/types';
 ---
 
 <BaseLayout title={content.site.name} description={content.site.tagline}>
   <Header logo={content.site.logoUrl} />
   <main id="main-content">
     <Hero site={content.site} />
-    <QuickLinks links={content.quickLinks} />
-    <Calculators />
-    <FAQ items={content.faq} />
+    <QuickLinks links={content.quickLinks as QuickLink[]} text={content.sections.accesos as AccessSection} />
+    <Calculators text={content.sections.calculadoras} />
+    <FAQ items={content.faq} text={content.sections.faq} />
   </main>
   <Footer email={content.site.contactEmail} />
 </BaseLayout>

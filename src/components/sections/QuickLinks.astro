@@ -1,10 +1,24 @@
 ---
-import type { QuickLink } from '../../lib/types';
+import type { AccessSection, QuickLink } from '../../lib/types';
 
 interface Props {
   links: QuickLink[];
+  text: AccessSection;
 }
-const { links } = Astro.props;
+const { links, text } = Astro.props;
+
+const groups = text.groups
+  .map((g) => ({ ...g, links: links.filter((l) => l.audience === g.audience) }))
+  .filter((g) => g.links.length > 0);
+
+// Los formularios de Google de LAATS piden iniciar sesión; los de Microsoft no.
+function needsGoogle(url: string): boolean {
+  try {
+    return ['docs.google.com', 'forms.gle'].includes(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
 
 function safeUrl(url: string): string {
   try {
@@ -30,35 +44,46 @@ const icons: Record<string, string> = {
 <section id="accesos" class="py-16 px-4 md:px-8" aria-labelledby="accesos-titulo">
   <div class="max-w-6xl mx-auto">
     <div class="mb-10">
-      <p class="eyebrow">Formularios</p>
-      <h2 id="accesos-titulo" class="text-3xl font-bold text-[var(--color-text)] mb-2">Accesos rápidos</h2>
-      <p class="text-[var(--color-muted)] max-w-[48ch]">Todos tus trámites de recursos humanos en un solo lugar.</p>
+      <p class="eyebrow">{text.eyebrow}</p>
+      <h2 id="accesos-titulo" class="text-3xl font-bold text-[var(--color-text)] mb-2">{text.title}</h2>
+      <p class="text-[var(--color-muted)] max-w-[52ch]">{text.subtitle}</p>
     </div>
-    <ul class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      {links.map((link) => (
-        <li class="flex">
-          <a
-            href={safeUrl(link.url)}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="card-link group w-full bg-[var(--color-surface)] rounded-xl p-6 flex flex-col gap-3"
-          >
-            <div class="w-10 h-10 text-[var(--color-primary)]" aria-hidden="true" set:html={icons[link.icon] ?? icons['file-text']} />
-            <div>
-              <span class="inline-block text-xs font-semibold bg-[var(--color-accent)]/20 text-[var(--color-primary-dark)] px-2 py-0.5 rounded mb-2">{link.category}</span>
-              <h3 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{link.title}</h3>
-              <p class="text-sm text-[var(--color-muted)] mt-1 leading-relaxed">{link.description}</p>
-            </div>
-            <div class="mt-auto flex items-center text-[var(--color-primary)] text-sm font-medium">
-              Abrir formulario
-              <span class="sr-only"> (se abre en una pestaña nueva)</span>
-              <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </a>
-        </li>
+    <div class="space-y-12">
+      {groups.map((group) => (
+        <div>
+          <h3 id={`accesos-${group.audience}`} class="text-xl font-bold text-[var(--color-text)]">{group.title}</h3>
+          <p class="text-sm text-[var(--color-muted)] mt-1 mb-5 max-w-[70ch]">{group.support}</p>
+          <ul aria-labelledby={`accesos-${group.audience}`} class:list={['grid grid-cols-1 md:grid-cols-2 gap-4', group.links.length === 3 ? 'xl:grid-cols-3' : 'xl:grid-cols-4']}>
+            {group.links.map((link) => (
+              <li class="flex">
+                <a
+                  href={safeUrl(link.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="card-link group w-full bg-[var(--color-surface)] rounded-xl p-6 flex flex-col gap-3"
+                >
+                  <div class="w-10 h-10 text-[var(--color-primary)]" aria-hidden="true" set:html={icons[link.icon] ?? icons['file-text']} />
+                  <div>
+                    <span class="inline-block text-xs font-semibold bg-[var(--color-accent)]/20 text-[var(--color-primary-dark)] px-2 py-0.5 rounded mb-2">{link.category}</span>
+                    <h4 class="font-semibold text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors">{link.title}</h4>
+                    <p class="text-sm text-[var(--color-muted)] mt-1 leading-relaxed">{link.description}</p>
+                  </div>
+                  <div class="mt-auto">
+                    <div class="flex items-center text-[var(--color-primary)] text-sm font-semibold">
+                      Abrir formulario
+                      <span class="sr-only"> (se abre en una pestaña nueva)</span>
+                      <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                    {needsGoogle(link.url) && <p class="text-xs text-[var(--color-muted)] mt-1">{text.googleNote}</p>}
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   </div>
 </section>

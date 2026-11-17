@@ -3,6 +3,12 @@ import OvertimeCalc from '../calculators/OvertimeCalc.astro';
 import VacationCalc from '../calculators/VacationCalc.astro';
 import ThirteenthCalc from '../calculators/ThirteenthCalc.astro';
 import LiquidationCalc from '../calculators/LiquidationCalc.astro';
+import type { SectionText } from '../../lib/types';
+
+interface Props {
+  text: SectionText;
+}
+const { text } = Astro.props;
 
 const tabs = [
   { id: 'sobretiempo', label: 'Sobretiempos', Panel: OvertimeCalc },
@@ -15,9 +21,9 @@ const tabs = [
 <section id="calculadoras" class="py-16 px-4 md:px-8" aria-labelledby="calculadoras-titulo">
   <div class="max-w-4xl mx-auto">
     <div class="mb-10">
-      <p class="eyebrow">Herramientas</p>
-      <h2 id="calculadoras-titulo" class="text-3xl font-bold text-[var(--color-text)] mb-2">Calculadoras laborales</h2>
-      <p class="text-[var(--color-muted)] max-w-[48ch]">Cálculos basados en la legislación laboral vigente de Panamá.</p>
+      <p class="eyebrow">{text.eyebrow}</p>
+      <h2 id="calculadoras-titulo" class="text-3xl font-bold text-[var(--color-text)] mb-2">{text.title}</h2>
+      <p class="text-[var(--color-muted)] max-w-[52ch]">{text.subtitle}</p>
     </div>
 
     <div

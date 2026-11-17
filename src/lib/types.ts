@@ -5,6 +5,7 @@ export interface QuickLink {
   icon: string;
   url: string;
   category: string;
+  audience: 'todos' | 'temporal';
 }
 
 export interface FAQItem {
@@ -13,8 +14,20 @@ export interface FAQItem {
   answer: string;
 }
 
+export interface SectionText {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+}
+
+export interface AccessSection extends SectionText {
+  googleNote: string;
+  groups: { audience: QuickLink['audience']; title: string; support: string }[];
+}
+
 export interface SiteContent {
   site: { name: string; tagline: string; contactEmail: string; logoUrl: string; };
+  sections: { accesos: AccessSection; calculadoras: SectionText; faq: SectionText };
   quickLinks: QuickLink[];
   faq: FAQItem[];
 }

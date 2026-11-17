@@ -1,9 +1,39 @@
 {
   "site": {
     "name": "Portal RRHH LAATS Panamá",
-    "tagline": "Tus recursos de Recursos Humanos en un solo lugar",
+    "tagline": "Tus trámites, herramientas y consultas a mano.",
     "contactEmail": "asistentepanama@laats.net",
     "logoUrl": "/logo-laats.jpg"
+  },
+  "sections": {
+    "accesos": {
+      "eyebrow": "Trámites",
+      "title": "Accesos rápidos",
+      "subtitle": "Elige el formulario según tu trámite y tipo de contratación.",
+      "googleNote": "Requiere cuenta de Google",
+      "groups": [
+        {
+          "audience": "todos",
+          "title": "Para todo el personal",
+          "support": "Nuevo ingreso, cartas de trabajo y vacaciones para personal fijo y temporal."
+        },
+        {
+          "audience": "temporal",
+          "title": "Solo para personal temporal",
+          "support": "Gestiona tus sobretiempos, justificaciones, consultas de planilla y gastos reembolsables."
+        }
+      ]
+    },
+    "calculadoras": {
+      "eyebrow": "Herramientas",
+      "title": "Calculadoras laborales",
+      "subtitle": "Calcula montos de referencia. Los resultados no son definitivos."
+    },
+    "faq": {
+      "eyebrow": "Tus dudas",
+      "title": "Preguntas frecuentes",
+      "subtitle": "Consulta los plazos y requisitos de tus trámites."
+    }
   },
   "quickLinks": [
     {
@@ -12,31 +42,8 @@
       "description": "Formulario de incorporación para nuevos colaboradores. Completa todos los campos antes de tu fecha de inicio.",
       "icon": "user-plus",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLScwoLaxfGXiEdHGLLftyHxUsERxF1BlHSFbVZj483onX1zMzA/viewform?usp=header",
-      "category": "Incorporación"
-    },
-    {
-      "id": "sobretiempos",
-      "title": "Solicitud de Sobretiempos (Temporales)",
-      "description": "Solo sobretiempos con aprobación previa. Plazo: 10 días después del cierre de quincena (1-15 y 16-fin de mes). Envíos tardíos se pagan en la quincena siguiente.",
-      "icon": "clock",
-      "url": "https://docs.google.com/forms/d/e/1FAIpQLSf4R8M1110KymvafC5XBo1xVrWwhTahkVIRdZkQ-aRV34_Wow/viewform?usp=header",
-      "category": "Asistencia"
-    },
-    {
-      "id": "justificaciones",
-      "title": "Justificaciones (Temporales)",
-      "description": "Justificación de ausencias e incapacidades. Enviar a la brevedad posible con los documentos de respaldo correspondientes.",
-      "icon": "file-text",
-      "url": "https://docs.google.com/forms/d/e/1FAIpQLSePC-h9-U1cfxVONfht8DJLaesf5LwHkZVaQs6QW9IuRmP5rA/viewform?usp=header",
-      "category": "Asistencia"
-    },
-    {
-      "id": "planilla",
-      "title": "Consultas de Planilla (Temporales)",
-      "description": "Consultas respondidas en máximo 2 días hábiles. Incluye tu código de empleado y el período de la consulta.",
-      "icon": "user-question",
-      "url": "https://forms.cloud.microsoft/r/Kr02FgPgaL",
-      "category": "Nómina"
+      "category": "Incorporación",
+      "audience": "todos"
     },
     {
       "id": "cartas-trabajo",
@@ -44,15 +51,8 @@
       "description": "Solicitudes recibidas hasta el miércoles a medianoche. Confección el jueves, entrega el viernes.",
       "icon": "envelope",
       "url": "https://forms.microsoft.com/r/umKD1FFhpY",
-      "category": "Documentos"
-    },
-    {
-      "id": "gastos",
-      "title": "Gastos Reembolsables (Temporales)",
-      "description": "La factura debe incluir nombre y RUC de LAATS (RUC 1075307-1-553162 DV 63). Se reembolsa en la próxima planilla sin deducciones.",
-      "icon": "dollar-sign",
-      "url": "https://docs.google.com/forms/d/e/1FAIpQLSewyluYWJRVxZ_3CufQSWDEyPVV5eqmc62hqB5Tuvka1QvRbQ/viewform?usp=header",
-      "category": "Finanzas"
+      "category": "Documentos",
+      "audience": "todos"
     },
     {
       "id": "vacaciones",
@@ -60,7 +60,44 @@
       "description": "Enviar firmado por tu supervisor en formato PDF. Debe llegar al menos 2 días antes del cierre de planilla previo a tus vacaciones.",
       "icon": "calendar",
       "url": "https://docs.google.com/forms/d/e/1FAIpQLSc3tJE-DGr3TYADEXa1pJaDcuNKWd2ir-76FhD1jlxx_KRswQ/viewform?usp=header",
-      "category": "Beneficios"
+      "category": "Beneficios",
+      "audience": "todos"
+    },
+    {
+      "id": "sobretiempos",
+      "title": "Solicitud de Sobretiempos",
+      "description": "Solo sobretiempos con aprobación previa. Plazo: 10 días después del cierre de quincena (1-15 y 16-fin de mes). Envíos tardíos se pagan en la quincena siguiente.",
+      "icon": "clock",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSf4R8M1110KymvafC5XBo1xVrWwhTahkVIRdZkQ-aRV34_Wow/viewform?usp=header",
+      "category": "Asistencia",
+      "audience": "temporal"
+    },
+    {
+      "id": "justificaciones",
+      "title": "Justificaciones",
+      "description": "Justificación de ausencias e incapacidades. Enviar a la brevedad posible con los documentos de respaldo correspondientes.",
+      "icon": "file-text",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSePC-h9-U1cfxVONfht8DJLaesf5LwHkZVaQs6QW9IuRmP5rA/viewform?usp=header",
+      "category": "Asistencia",
+      "audience": "temporal"
+    },
+    {
+      "id": "planilla",
+      "title": "Consultas de Planilla",
+      "description": "Consultas respondidas en máximo 2 días hábiles. Incluye tu código de empleado y el período de la consulta.",
+      "icon": "user-question",
+      "url": "https://forms.cloud.microsoft/r/Kr02FgPgaL",
+      "category": "Nómina",
+      "audience": "temporal"
+    },
+    {
+      "id": "gastos",
+      "title": "Gastos Reembolsables",
+      "description": "La factura debe incluir nombre y RUC de LAATS (RUC 1075307-1-553162 DV 63). Se reembolsa en la próxima planilla sin deducciones.",
+      "icon": "dollar-sign",
+      "url": "https://docs.google.com/forms/d/e/1FAIpQLSewyluYWJRVxZ_3CufQSWDEyPVV5eqmc62hqB5Tuvka1QvRbQ/viewform?usp=header",
+      "category": "Finanzas",
+      "audience": "temporal"
     }
   ],
   "faq": [
