@@ -27,7 +27,7 @@ Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.17.5, bu
 - `tests/` — Casos de prueba de las calculadoras
 - `src/pages/index.astro` — Página única que ensambla todas las secciones
 - `content/content.json` — Fuente de verdad del contenido: lema, textos de cada sección (`sections`), links y FAQs. `site.contactPhone` es el número de atención al personal en el hangar (consultas del día a día); se muestra en el pie junto al correo
-- `public/` — Assets estáticos (logo: logo-laats.jpg; favicon.ico = ícono oficial de laats.net)
+- `public/` — Assets estáticos (logo: logo-laats.jpg; favicon.ico = ícono oficial de laats.net); `og-portal.jpg` es la imagen de vista previa del enlace y se regenera con `python scripts/generar-og.py` (logo oficial sin redibujar; contenido dentro del cuadrado central porque WhatsApp recorta a ese cuadrado)
 - `.github/workflows/deploy.yml` — Pipeline de deploy a GitHub Pages
 - `.github/dependabot.yml` — Actualizaciones automáticas de dependencias
 

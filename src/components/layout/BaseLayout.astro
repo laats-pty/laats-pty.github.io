@@ -35,8 +35,9 @@ const ogImage = new URL('/og-portal.jpg', Astro.site).href;
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; form-action 'none';"
     />
-    {/* Vista previa al compartir el enlace (WhatsApp, Teams). La imagen sale
-        del diseño editable de Canva «Portal RRHH · Imagen para compartir». */}
+    {/* Vista previa al compartir el enlace (WhatsApp, Teams). La imagen se
+        genera con scripts/generar-og.py: logo oficial y todo el contenido
+        dentro del cuadrado central, que es lo que WhatsApp muestra. */}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
