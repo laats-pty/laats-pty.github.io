@@ -151,7 +151,7 @@ Estructura de 13 categorías según PayDay (Planilla Computarizada de LAATS):
 - **Fijo** (Rotación 6×2): salario mensual ÷ **182.5** horas
 - **Temporal** (Rotación 6×1): salario mensual ÷ **208** horas
 
-**Recargo:** aplica a partir de la **3.ª hora diaria** O la **9.ª hora semanal** de sobretiempo.
+**Recargo:** aplica a las horas de sobretiempo que excedan de 3 diarias o de 9 semanales, es decir, desde la **4.ª hora diaria** o la **10.ª hora semanal**. La norma habla de «tercera» y «novena», pero en el cálculo corre desde la 4.ª y la 10.ª (confirmado por Josué, 2026-11-17).
 Los factores "Con Recargo" ya incluyen el multiplicador ×1.75 sobre el factor base.
 
 ### Vacaciones (VacationCalc.astro)
@@ -185,7 +185,7 @@ Todas muestran un aviso dorado en el resultado:
 
 ## Ley Laboral Panameña (referencia)
 
-- **Sobretiempo** — Ley 44 de 1995, Art. 26: Diurno ×1.25, Mixto ×1.50, Nocturno ×1.75, Descanso ×1.50 adicional, Feriado ×2.50 total. Recargo ×1.75 desde la 3.ª hora diaria o 9.ª semanal.
+- **Sobretiempo** — Ley 44 de 1995, Art. 26: Diurno ×1.25, Mixto ×1.50, Nocturno ×1.75, Descanso ×1.50 adicional, Feriado ×2.50 total. Recargo ×1.75 sobre las horas que excedan de 3 diarias o 9 semanales (desde la 4.ª diaria o la 10.ª semanal).
 - **Vacaciones** — Código de Trabajo Art. 54: 30 días por 11 meses trabajados
 - **Décimo tercer mes** — Art. 43 CT: 3 cuotas de 4 meses; fórmula = total devengado en período ÷ 12
 - **Liquidación** — Prima de antigüedad (art. 224): 1 semana por año, proporcional, solo contrato indefinido. Indemnización por despido injustificado (art. 225): 3.4 semanas por año hasta 10 años, 1 semana por año después
