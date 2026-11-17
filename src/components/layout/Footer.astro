@@ -1,20 +1,31 @@
 ---
 interface Props {
   email: string;
+  phone: string;
+  phoneLabel: string;
 }
-const { email } = Astro.props;
+const { email, phone, phoneLabel } = Astro.props;
+// tel: admite solo dígitos y el signo +.
+const telHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
+const linkClass = 'text-[var(--color-accent-on-dark)] underline underline-offset-4 hover:text-white transition-colors rounded';
 ---
 
 <footer class="on-dark bg-[var(--color-primary-dark)]">
   <div class="max-w-6xl mx-auto px-4 md:px-8">
-    <div class="py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center">
+    <div class="py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
       <p class="text-white/70 text-sm">
         © <span x-data="currentYear" x-text="year">{new Date().getFullYear()}</span> LAATS Panamá. Todos los derechos reservados.
       </p>
-      <p class="text-white/70 text-sm">
-        ¿Preguntas?{' '}
-        <a href={`mailto:${email}`} class="text-[var(--color-accent-on-dark)] underline underline-offset-4 hover:text-white transition-colors rounded">{email}</a>
-      </p>
+      <ul class="text-white/70 text-sm space-y-1 sm:text-right">
+        <li>
+          {phoneLabel}:{' '}
+          <a href={telHref} class:list={[linkClass, 'whitespace-nowrap']}>{phone}</a>
+        </li>
+        <li>
+          ¿Preguntas?{' '}
+          <a href={`mailto:${email}`} class={linkClass}>{email}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </footer>

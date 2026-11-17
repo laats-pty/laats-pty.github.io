@@ -26,7 +26,7 @@ export interface AccessSection extends SectionText {
 }
 
 export interface SiteContent {
-  site: { name: string; tagline: string; contactEmail: string; logoUrl: string; };
+  site: { name: string; tagline: string; contactEmail: string; contactPhone: string; contactPhoneLabel: string; logoUrl: string; };
   sections: { accesos: AccessSection; calculadoras: SectionText; faq: SectionText };
   quickLinks: QuickLink[];
   faq: FAQItem[];

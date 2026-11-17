@@ -26,7 +26,7 @@ Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.17.5, bu
 - `src/styles/globals.css` — Tokens de color y clases compartidas (`.field`, `.btn-primary`, `.toggle`, `.result-box`, `.disclaimer`, `.eyebrow`, `.card-link`)
 - `tests/` — Casos de prueba de las calculadoras
 - `src/pages/index.astro` — Página única que ensambla todas las secciones
-- `content/content.json` — Fuente de verdad del contenido: lema, textos de cada sección (`sections`), links y FAQs
+- `content/content.json` — Fuente de verdad del contenido: lema, textos de cada sección (`sections`), links y FAQs. `site.contactPhone` es el número de atención al personal en el hangar (consultas del día a día); se muestra en el pie junto al correo
 - `public/` — Assets estáticos (logo: logo-laats.jpg; favicon.ico = ícono oficial de laats.net)
 - `.github/workflows/deploy.yml` — Pipeline de deploy a GitHub Pages
 - `.github/dependabot.yml` — Actualizaciones automáticas de dependencias

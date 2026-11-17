@@ -3,6 +3,8 @@
     "name": "Portal RRHH LAATS Panamá",
     "tagline": "Tus trámites, herramientas y consultas a mano.",
     "contactEmail": "asistentepanama@laats.net",
+    "contactPhone": "+507 6129-0605",
+    "contactPhoneLabel": "Atención al personal en el hangar",
     "logoUrl": "/logo-laats.jpg"
   },
   "sections": {
