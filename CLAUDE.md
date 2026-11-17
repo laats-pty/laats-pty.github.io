@@ -22,7 +22,7 @@ Astro 7 (static) + TypeScript (strict) + Tailwind CSS v4 + Alpine.js v3.17.5, bu
 - `src/components/sections/` — Hero, QuickLinks, Calculators, FAQ
 - `src/components/calculators/` — Las 4 calculadoras individuales con Alpine.js
 - `src/lib/` — calculations.ts (lógica pura de cálculo + datos de factores), types.ts
-- `src/scripts/calculators.ts` — Componentes Alpine (`Alpine.data`): calculadoras (llaman a calculations.ts), pestañas, encabezado (`siteHeader`) y año del pie (`currentYear`)
+- `src/scripts/calculators.ts` — Componentes Alpine (`Alpine.data`): calculadoras (llaman a calculations.ts), acordeón de calculadoras (`accordion`), encabezado (`siteHeader`) y año del pie (`currentYear`)
 - `src/styles/globals.css` — Tokens de color y clases compartidas (`.field`, `.btn-primary`, `.toggle`, `.result-box`, `.disclaimer`, `.eyebrow`, `.card-link`)
 - `tests/` — Casos de prueba de las calculadoras
 - `src/pages/index.astro` — Página única que ensambla todas las secciones
@@ -126,8 +126,10 @@ Cada link lleva `audience` en content.json y la sección se pinta en dos grupos 
 
 ## Calculadoras — Reglas de negocio
 
+La sección es un **acordeón** (decisión de Josué, 2026-11-17, igual que el portal de Aviazion): las cuatro calculadoras entran cerradas y se abre una a la vez; lo escrito se conserva al cerrar. Título y pista de cada una salen de `sections.calculadoras.items` en content.json. El hero es compacto para que los accesos asomen en la primera pantalla.
+
 ### Sobretiempos (OvertimeCalc.astro; datos en `OVERTIME_GROUPS` de calculations.ts)
-Estructura de 13 categorías según PayDay (Planilla Computarizada de LAATS):
+Estructura de 13 categorías según PayDay (Planilla Computarizada de LAATS). En la tabla cada fila muestra un nombre corto (`short`: Diurno, Mixto, Nocturno) con el concepto de planilla entre paréntesis (`label`); el resumen del resultado usa el concepto completo:
 
 | Categoría | Factor |
 |-----------|--------|

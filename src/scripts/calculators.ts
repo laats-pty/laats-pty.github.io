@@ -47,17 +47,17 @@ document.addEventListener('alpine:init', () => {
   // El año del pie se calcula en el navegador; el del build queda de respaldo.
   Alpine.data('currentYear', () => ({ year: new Date().getFullYear() }));
 
-  // Pestañas accesibles (flechas, Inicio y Fin mueven el foco y la selección).
-  Alpine.data('tabs', (first: string) => ({
-    tab: first,
-    move(this: any, event: KeyboardEvent, step: number | 'first' | 'last') {
-      const tabs = Array.from(this.$refs.tablist.querySelectorAll('[role="tab"]')) as HTMLElement[];
-      const current = tabs.indexOf(event.target as HTMLElement);
-      let next = 0;
-      if (step === 'last') next = tabs.length - 1;
-      else if (step !== 'first') next = (current + step + tabs.length) % tabs.length;
-      this.tab = tabs[next].dataset.tab;
-      tabs[next].focus();
+  // Acordeón de las calculadoras: todas cerradas al entrar, una abierta a la vez.
+  Alpine.data('accordion', () => ({
+    open: null as string | null,
+    toggle(id: string) {
+      this.open = this.open === id ? null : id;
+    },
+    isOpen(id: string) {
+      return this.open === id;
+    },
+    expanded(id: string) {
+      return this.open === id ? 'true' : 'false';
     },
   }));
 

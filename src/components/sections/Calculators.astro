@@ -3,19 +3,20 @@ import OvertimeCalc from '../calculators/OvertimeCalc.astro';
 import VacationCalc from '../calculators/VacationCalc.astro';
 import ThirteenthCalc from '../calculators/ThirteenthCalc.astro';
 import LiquidationCalc from '../calculators/LiquidationCalc.astro';
-import type { SectionText } from '../../lib/types';
+import type { CalculatorsSection } from '../../lib/types';
 
 interface Props {
-  text: SectionText;
+  text: CalculatorsSection;
 }
 const { text } = Astro.props;
 
-const tabs = [
-  { id: 'sobretiempo', label: 'Sobretiempos', Panel: OvertimeCalc },
-  { id: 'vacaciones', label: 'Vacaciones', Panel: VacationCalc },
-  { id: 'decimo', label: 'Décimo tercer mes', Panel: ThirteenthCalc },
-  { id: 'liquidacion', label: 'Liquidación', Panel: LiquidationCalc },
-];
+const panels: Record<string, any> = {
+  sobretiempo: OvertimeCalc,
+  vacaciones: VacationCalc,
+  decimo: ThirteenthCalc,
+  liquidacion: LiquidationCalc,
+};
+const calcs = text.items.filter((c) => c.id in panels).map((c) => ({ ...c, Panel: panels[c.id] }));
 ---
 
 <section id="calculadoras" class="py-16 px-4 md:px-8" aria-labelledby="calculadoras-titulo">
@@ -26,57 +27,43 @@ const tabs = [
       <p class="text-[var(--color-muted)] max-w-[52ch]">{text.subtitle}</p>
     </div>
 
+    <!-- Acordeón: todas cerradas al entrar y una abierta a la vez. Lo escrito en una
+         calculadora se conserva aunque se cierre (x-show solo la oculta). -->
     <div
-      x-data={`tabs('${tabs[0].id}')`}
-      class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-sm"
+      x-data="accordion"
+      class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl overflow-hidden shadow-sm divide-y divide-[var(--color-border)]"
     >
-      <!-- En móvil las 4 pestañas van en cuadrícula 2×2 para que ninguna quede oculta. -->
-      <div
-        role="tablist"
-        aria-label="Calculadoras"
-        x-ref="tablist"
-        x-on:keydown.right.prevent="move($event, 1)"
-        x-on:keydown.left.prevent="move($event, -1)"
-        x-on:keydown.home.prevent="move($event, 'first')"
-        x-on:keydown.end.prevent="move($event, 'last')"
-        class="grid grid-cols-2 sm:flex border-b border-[var(--color-border)]"
-      >
-        {tabs.map((t, i) => (
-          <button
-            type="button"
-            role="tab"
-            id={`tab-${t.id}`}
-            data-tab={t.id}
-            aria-controls={`panel-${t.id}`}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            tabindex={i === 0 ? 0 : -1}
-            x-on:click={`tab = '${t.id}'`}
-            x-bind:aria-selected={`(tab === '${t.id}').toString()`}
-            x-bind:tabindex={`tab === '${t.id}' ? 0 : -1`}
-            x-bind:class={`tab === '${t.id}' ? 'border-[var(--color-primary)] text-[var(--color-primary)] font-semibold' : 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-text)]'`}
-            class:list={[
-              'px-4 sm:px-5 py-3.5 text-sm text-center border-b-2 -mb-px transition-colors outline-offset-[-2px]',
-              i === 0 ? 'border-[var(--color-primary)] text-[var(--color-primary)] font-semibold' : 'border-transparent text-[var(--color-muted)]',
-            ]}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      <div class="p-5 md:p-8">
-        {tabs.map((t, i) => (
+      {calcs.map((c) => (
+        <div>
+          <h3>
+            <button
+              type="button"
+              id={`calc-btn-${c.id}`}
+              class="calc-toggle"
+              aria-controls={`panel-${c.id}`}
+              aria-expanded="false"
+              x-bind:aria-expanded={`expanded('${c.id}')`}
+              x-on:click={`toggle('${c.id}')`}
+            >
+              <span class="flex-1 min-w-0">
+                <span class="block font-semibold text-[var(--color-text)]">{c.label}</span>
+                <span class="block text-sm text-[var(--color-muted)]">{c.hint}</span>
+              </span>
+              <svg class="calc-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+          </h3>
           <div
-            role="tabpanel"
-            id={`panel-${t.id}`}
-            aria-labelledby={`tab-${t.id}`}
-            x-show={`tab === '${t.id}'`}
-            style={i === 0 ? undefined : 'display:none;'}
+            id={`panel-${c.id}`}
+            role="region"
+            aria-labelledby={`calc-btn-${c.id}`}
+            x-show={`isOpen('${c.id}')`}
+            style="display:none;"
+            class="p-5 md:p-8 border-t border-[var(--color-border)]"
           >
-            <t.Panel />
+            <c.Panel />
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   </div>
 </section>

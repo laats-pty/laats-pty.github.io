@@ -159,6 +159,33 @@ p {
   border-color: var(--color-primary);
   color: #fff;
 }
+/* Acordeón de calculadoras */
+.calc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.calc-toggle:hover,
+.calc-toggle[aria-expanded='true'] {
+  background: #eff6ff;
+}
+.calc-toggle:focus-visible {
+  outline-offset: -2px;
+}
+.calc-chevron {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  transition: transform 0.2s;
+}
+.calc-toggle[aria-expanded='true'] .calc-chevron {
+  transform: rotate(180deg);
+}
+
 /* Grupos desplegables de la tabla de sobretiempos */
 .group-toggle {
   display: flex;

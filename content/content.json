@@ -29,7 +29,29 @@
     "calculadoras": {
       "eyebrow": "Herramientas",
       "title": "Calculadoras laborales",
-      "subtitle": "Calcula montos de referencia. Los resultados no son definitivos."
+      "subtitle": "Calcula montos de referencia. Los resultados no son definitivos.",
+      "items": [
+        {
+          "id": "sobretiempo",
+          "label": "Sobretiempos",
+          "hint": "Horas extra según jornada, recargo, día de descanso y feriado."
+        },
+        {
+          "id": "vacaciones",
+          "label": "Vacaciones",
+          "hint": "Días y pago según los meses trabajados."
+        },
+        {
+          "id": "decimo",
+          "label": "Décimo tercer mes",
+          "hint": "Monto de cada una de las tres cuotas."
+        },
+        {
+          "id": "liquidacion",
+          "label": "Liquidación",
+          "hint": "Estimación de prima de antigüedad, vacaciones y décimo."
+        }
+      ]
     },
     "faq": {
       "eyebrow": "Tus dudas",

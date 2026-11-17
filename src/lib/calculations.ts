@@ -46,6 +46,9 @@ export type EmployeeType = keyof typeof OVERTIME_DIVISORS;
 
 export interface OvertimeCategory {
   code: string;
+  /** Nombre corto que se lee en la tabla, bajo el título de su grupo. */
+  short: string;
+  /** Concepto tal como sale en la planilla (PayDay). */
   label: string;
   factor: number;
 }
@@ -59,38 +62,38 @@ export const OVERTIME_GROUPS: OvertimeGroup[] = [
   {
     title: 'Día regular — sin recargo',
     categories: [
-      { code: 'SDiu', label: 'ST Diurno DiaNor', factor: 1.25 },
-      { code: 'SMix', label: 'ST Mixto DiaNor', factor: 1.5 },
-      { code: 'SNoc', label: 'ST Nocturno DiaNor', factor: 1.75 },
+      { code: 'SDiu', short: 'Diurno', label: 'ST Diurno DiaNor', factor: 1.25 },
+      { code: 'SMix', short: 'Mixto', label: 'ST Mixto DiaNor', factor: 1.5 },
+      { code: 'SNoc', short: 'Nocturno', label: 'ST Nocturno DiaNor', factor: 1.75 },
     ],
   },
   {
     title: 'Día regular — con recargo (×1.75)',
     categories: [
-      { code: 'SDiuRc', label: 'ST Diurno DiaNor Rec', factor: 2.1875 },
-      { code: 'SMixRc', label: 'ST Mixto DiaNor Rec', factor: 2.625 },
-      { code: 'SNocRc', label: 'ST Nocturno DiaNor Rec', factor: 3.0625 },
+      { code: 'SDiuRc', short: 'Diurno', label: 'ST Diurno DiaNor Rec', factor: 2.1875 },
+      { code: 'SMixRc', short: 'Mixto', label: 'ST Mixto DiaNor Rec', factor: 2.625 },
+      { code: 'SNocRc', short: 'Nocturno', label: 'ST Nocturno DiaNor Rec', factor: 3.0625 },
     ],
   },
   {
     title: 'Domingo / día de descanso — sin recargo',
     categories: [
-      { code: 'SDiuDom', label: 'ST Diurno DiaDes', factor: 1.875 },
-      { code: 'SMixDom', label: 'ST Mixto DiaDes', factor: 2.25 },
-      { code: 'SNocDom', label: 'ST Nocturno DiaDes', factor: 2.625 },
+      { code: 'SDiuDom', short: 'Diurno', label: 'ST Diurno DiaDes', factor: 1.875 },
+      { code: 'SMixDom', short: 'Mixto', label: 'ST Mixto DiaDes', factor: 2.25 },
+      { code: 'SNocDom', short: 'Nocturno', label: 'ST Nocturno DiaDes', factor: 2.625 },
     ],
   },
   {
     title: 'Domingo / día de descanso — con recargo (×1.75)',
     categories: [
-      { code: 'SDiuDomRc', label: 'ST Diurno DiaDes Rec', factor: 3.28125 },
-      { code: 'SMixDomRc', label: 'ST Mixto DiaDes Rec', factor: 3.9375 },
-      { code: 'SNocDomRc', label: 'ST Nocturno DiaDes Rec', factor: 4.59375 },
+      { code: 'SDiuDomRc', short: 'Diurno', label: 'ST Diurno DiaDes Rec', factor: 3.28125 },
+      { code: 'SMixDomRc', short: 'Mixto', label: 'ST Mixto DiaDes Rec', factor: 3.9375 },
+      { code: 'SNocDomRc', short: 'Nocturno', label: 'ST Nocturno DiaDes Rec', factor: 4.59375 },
     ],
   },
   {
     title: 'Feriado nacional',
-    categories: [{ code: 'Feriado', label: 'ST Feriado Nacional', factor: 2.5 }],
+    categories: [{ code: 'Feriado', short: 'Feriado nacional', label: 'ST Feriado Nacional', factor: 2.5 }],
   },
 ];
 

@@ -6,7 +6,7 @@ const { site } = Astro.props;
 ---
 
 <section id="inicio" class="on-dark bg-[var(--color-primary)]">
-  <div class="max-w-6xl mx-auto px-4 md:px-8 py-12 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-8 py-10 md:py-14">
     <div class="flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
       <!-- En móvil el logo ya está en el encabezado, justo encima: aquí se muestra desde md. -->
       <div class="hidden md:flex flex-shrink-0">
@@ -22,7 +22,7 @@ const { site } = Astro.props;
       </div>
       <div class="text-center md:text-left">
         <h1 class="text-white text-4xl md:text-5xl font-bold leading-[1.1] mb-4">{site.name}</h1>
-        <p class="text-white/80 text-lg md:text-xl mb-8 max-w-[52ch]">{site.tagline}</p>
+        <p class="text-white/80 text-lg md:text-xl mb-6 max-w-[52ch]">{site.tagline}</p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
           <a
             href="#accesos"

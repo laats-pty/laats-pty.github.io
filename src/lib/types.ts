@@ -20,6 +20,10 @@ export interface SectionText {
   subtitle: string;
 }
 
+export interface CalculatorsSection extends SectionText {
+  items: { id: string; label: string; hint: string }[];
+}
+
 export interface AccessSection extends SectionText {
   googleNote: string;
   groups: { audience: QuickLink['audience']; title: string; support: string }[];
@@ -27,7 +31,7 @@ export interface AccessSection extends SectionText {
 
 export interface SiteContent {
   site: { name: string; tagline: string; contactEmail: string; contactPhone: string; contactPhoneLabel: string; logoUrl: string; };
-  sections: { accesos: AccessSection; calculadoras: SectionText; faq: SectionText };
+  sections: { accesos: AccessSection; calculadoras: CalculatorsSection; faq: SectionText };
   quickLinks: QuickLink[];
   faq: FAQItem[];
 }

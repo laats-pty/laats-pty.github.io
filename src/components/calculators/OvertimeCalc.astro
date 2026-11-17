@@ -54,7 +54,7 @@ import { OVERTIME_DIVISORS, OVERTIME_GROUPS, formatFactor } from '../../lib/calc
         {group.categories.map((c) => (
           <tr x-show={`estaAbierto(${i})`} style="display:none;" class="hover:bg-[var(--color-bg)] border-b border-[var(--color-border)]/60">
             <th scope="row" class="px-2 sm:px-3 py-2 text-left font-normal">
-              {c.label}
+              {c.short} <span class="text-xs text-[var(--color-muted)] whitespace-nowrap">({c.label})</span>
               <span class="sm:hidden block font-mono text-xs text-[var(--color-muted)]">{formatFactor(c.factor)}</span>
             </th>
             <td class="hidden sm:table-cell px-3 py-2 text-center font-mono text-[var(--color-muted)]">{formatFactor(c.factor)}</td>
