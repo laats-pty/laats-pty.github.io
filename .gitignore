@@ -41,3 +41,6 @@ credentials.json
 
 # jetbrains setting folder
 .idea/
+
+# memoria local de Evolver
+.evolver/
